@@ -22,6 +22,12 @@ export interface SideBarItem {
 
 export const sidebarItems: SideBarItem[] = [
   { title: 'Dashboard', url: '/', Icon: HomeIcon },
+  // * Client demo, remove after testing
+  {
+    title: 'Clients',
+    url: '/client',
+    Icon: AcademicCapIcon,
+  },
   { title: 'payment method', url: '/payment_method', Icon: BanknotesIcon },
   {
     title: 'Clients',
