@@ -11,6 +11,7 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+// * Client Model is completed
 model Client {
     id          String        @id @default(cuid())
     createdAt   DateTime      @default(now())
@@ -39,11 +40,13 @@ model Service {
 
     categoryId String
     providerId String
+    supplierId String?
 
     provider    Provider      @relation(fields: [providerId], references: [id])
     category    Category      @relation(fields: [categoryId], references: [id])
     Sale        Sale[]
     Transaction Transaction[]
+    Supplier    Supplier?     @relation(fields: [supplierId], references: [id])
 }
 
 model Category {
@@ -59,7 +62,6 @@ model Sale {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    net_fare         Decimal?
     payment_status   String? // paid/due
     paid_amount      Decimal?
     payment_due_Date String?
@@ -94,13 +96,15 @@ model Provider {
 }
 
 model Supplier {
-    id          String        @id @default(cuid())
-    createdAt   DateTime      @default(now())
-    updatedAt   DateTime      @updatedAt
-    name        String
-    // transaction date amount received , payment details
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+
+    net_fare    Decimal?
     Sale        Sale[]
     Transaction Transaction[]
+    Service     Service[]
 }
 
 model FinancialAccount {
@@ -129,22 +133,22 @@ model Transaction {
     supplierId         String?
     clientId           String?
     expenseId          String?
+    serviceId          String?
 
     supplier       Supplier?        @relation(fields: [supplierId], references: [id])
     client         Client?          @relation(fields: [clientId], references: [id])
     expense        Expense?         @relation(fields: [expenseId], references: [id])
     payment_method FinancialAccount @relation(fields: [financialAccountId], references: [id])
     Service        Service?         @relation(fields: [serviceId], references: [id])
-    serviceId      String?
 }
 
 model Expense {
     id              String        @id @default(cuid())
     createdAt       DateTime      @default(now())
     updatedAt       DateTime      @updatedAt
-    title           String
-    amount          Decimal
-    expense_details String
+    title           String?
+    amount          Decimal?
+    expense_details String?
     Transaction     Transaction[]
     Sale            Sale[]
 }
