@@ -9,10 +9,10 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
       <Notification />
-      <div className='text-zinc-800 flex min-h-screen flex-auto flex-shrink-0 flex-col bg-neutral-50 antialiased '>
+      <div className='flex min-h-screen flex-auto flex-shrink-0 flex-col antialiased '>
         <MobileNav />
         <Sidebar />
-        <main>
+        <main className='md:ml-64'>
           <div className='mx-4'>
             <Component {...pageProps} />
           </div>
