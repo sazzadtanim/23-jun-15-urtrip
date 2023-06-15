@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { nullable, z } from 'zod'
 
 const phoneRegex = new RegExp(
   /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
@@ -23,11 +23,11 @@ export type ZodService = z.infer<typeof validateService>
 
 export const validateClient = z.object({
   name: z.string().min(5),
-  email: z.string().email().nullable(),
+  email: z.string().or(z.string().email()),
   reference: z.string().nullish(),
   note: z.string().nullable(),
-  phone: z.string().max(15).regex(phoneRegex, 'Invalid Phone Number!'),
-  address: z.string().min(12, 'minimum 12 character').nullable(),
+  phone: z.string().max(15).min(8).regex(phoneRegex, 'Invalid Phone Number!'),
+  address: z.string().nullish(),
 })
 
 export type ZodClient = z.infer<typeof validateClient>
@@ -61,7 +61,7 @@ export const validateFinancialAccount = z.object({
   account_number: z.string().nullish(),
   address: z.string().nullish(),
   phone: z.string().nullish(),
-  balance: z.number().nullish(),
+  initial_balance: z.number().or(z.nan()),
 })
 
 export type ZodFinancialAccount = z.infer<typeof validateFinancialAccount>
@@ -70,7 +70,7 @@ export const validateTransaction = z.object({
   title: z.string().nonempty(),
   paid_from: z.string(),
   paid_to: z.string(),
-  transaction_id:z.string(),
+  transaction_id: z.string(),
   amount: z.number(),
 })
 
