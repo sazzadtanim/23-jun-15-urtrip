@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
     previewFeatures = ["jsonProtocol"]
 }
 
@@ -11,8 +11,140 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
+model Client {
+    id          String        @id @default(cuid())
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+    name        String
+    email       String?
+    reference   String?
+    note        String?
+    phone       String
+    address     String?
+    Sale        Sale[]
+    Transaction Transaction[]
+}
+
+model Service {
+    id           String   @id @default(cuid())
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    name         String
+    flight_dates String
+    adults       Decimal
+    child        Decimal
+    details      String
+    quoted_fare  Decimal?
+    quantity     Decimal?
+
+    categoryId String
+    providerId String
+
+    provider    Provider      @relation(fields: [providerId], references: [id])
+    category    Category      @relation(fields: [categoryId], references: [id])
+    Sale        Sale[]
+    Transaction Transaction[]
+}
+
+model Category {
+    id        String    @id @default(cuid())
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    name      String
+    Service   Service[]
+}
+
+model Sale {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    net_fare         Decimal?
+    payment_status   String? // paid/due
+    paid_amount      Decimal?
+    payment_due_Date String?
+    discount         Decimal?
+    co_or_dh         Decimal?
+
+    clientId   String
+    serviceId  String
+    providerId String
+    supplierId String
+    expenseId  String?
+
+    expense  Expense? @relation(fields: [expenseId], references: [id])
+    client   Client   @relation(fields: [clientId], references: [id])
+    service  Service  @relation(fields: [serviceId], references: [id])
+    provider Provider @relation(fields: [providerId], references: [id])
+    supplier Supplier @relation(fields: [supplierId], references: [id])
+
+    @@index([clientId])
+    @@index([serviceId])
+    @@index([providerId])
+    @@index([supplierId])
+}
+
+model Provider {
+    id        String    @id @default(cuid())
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    name      String
+    Sale      Sale[]
+    Service   Service[]
+}
+
+model Supplier {
+    id          String        @id @default(cuid())
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+    name        String
+    // transaction date amount received , payment details
+    Sale        Sale[]
+    Transaction Transaction[]
+}
+
+model FinancialAccount {
+    id              String   @id @default(cuid())
+    createdAt       DateTime @default(now())
+    title           String?
+    account_holder  String?
+    account_number  String?
+    phone           String?
+    initial_balance Decimal?
+
+    Transaction Transaction[]
+}
+
+model Transaction {
+    id             String   @id @default(cuid())
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    amount         Decimal
+    transaction_id String?
+    credit         Boolean // debit/credit
+    paid_from      String? //we can get money from client/Anyone else
+    paid_to        String? //we have to pay money to supplier/expense/anyone else
+
+    financialAccountId String
+    supplierId         String?
+    clientId           String?
+    expenseId          String?
+
+    supplier       Supplier?        @relation(fields: [supplierId], references: [id])
+    client         Client?          @relation(fields: [clientId], references: [id])
+    expense        Expense?         @relation(fields: [expenseId], references: [id])
+    payment_method FinancialAccount @relation(fields: [financialAccountId], references: [id])
+    Service        Service?         @relation(fields: [serviceId], references: [id])
+    serviceId      String?
+}
+
+model Expense {
+    id              String        @id @default(cuid())
+    createdAt       DateTime      @default(now())
+    updatedAt       DateTime      @updatedAt
+    title           String
+    amount          Decimal
+    expense_details String
+    Transaction     Transaction[]
+    Sale            Sale[]
 }
