@@ -41,12 +41,38 @@ export const validateSale = z.object({
   comission: z.number().optional(),
   status: z.string().optional(),
 
+  // client payment
+  client_payment_type: z.enum(['paidFromClient']),
+  client_payment_status: z.string().optional(),
+  client_payment_paid_amount: z.number().optional(),
+  client_payment_due_amount: z.number().optional(),
+  client_payment_due_date: z.date().optional(),
+  client_payment_paid_date: z.date().optional(),
+  client_payment_details: z.string().optional(),
+  client_payment_financialAccountId: z.string(),
+  client_payment_clientId: z.string().optional(),
 
+  // supplier payment
+  supplier_payment_type: z.enum(['payToSupplier']),
+  supplier_payment_status: z.string().optional(),
+  supplier_payment_paid_amount: z.number().optional(),
+  supplier_payment_due_amount: z.number().optional(),
+  supplier_payment_due_date: z.date().optional(),
+  supplier_payment_paid_date: z.date().optional(),
+  supplier_payment_details: z.string().optional(),
+  supplier_payment_financialAccountId: z.string(),
+  supplier_payment_supplierId: z.string().optional(),
 
-
-
-
-  
+  // expense payment
+  expense_payment_type: z.enum(['payForExpense']),
+  expense_payment_status: z.string().optional(),
+  expense_payment_paid_amount: z.number().optional(),
+  expense_payment_due_amount: z.number().optional(),
+  expense_payment_due_date: z.date().optional(),
+  expense_payment_paid_date: z.date().optional(),
+  expense_payment_details: z.string().optional(),
+  expense_payment_financialAccountId: z.string(),
+  expense_payment_expenseId: z.string().optional(),
 
   clientId: z.string(),
   serviceId: z.string(),
