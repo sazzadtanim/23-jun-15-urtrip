@@ -79,3 +79,12 @@ export const validateTransaction = z.object({
   transaction_id: z.string(),
   amount: z.number(),
 })
+
+export const zodFinancialAccountValidator = z.object({
+  title: z.string(),
+  account_holder: z.string(),
+  account_number: z.string(),
+  address: z.string(),
+  phone: z.string(),
+  balance: z.number(),
+})

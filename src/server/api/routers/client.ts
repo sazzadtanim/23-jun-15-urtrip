@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { validateClient } from 'zodType'
+import { validateClient } from 'zodValidator'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 import { prisma } from '~/server/db'
 

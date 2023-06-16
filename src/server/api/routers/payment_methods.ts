@@ -1,13 +1,15 @@
 import { z } from 'zod'
-import { zodFinancialAccountValidator } from 'zodType'
+import { zodFinancialAccountValidator } from 'zodValidator'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 import { prisma } from '~/server/db'
 
 export const paymentMethodsRouter = createTRPCRouter({
-  create: publicProcedure.input(zodFinancialAccountValidator).mutation(async ({ input }) => {
-    const client = await prisma.financialAccount.create({ data: input })
-    return client
-  }),
+  create: publicProcedure
+    .input(zodFinancialAccountValidator)
+    .mutation(async ({ input }) => {
+      const client = await prisma.financialAccount.create({ data: input })
+      return client
+    }),
   delete: publicProcedure
     .input(
       z.object({

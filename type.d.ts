@@ -1,4 +1,4 @@
-import { type HTMLInputTypeAttribute } from "react"
+import { type HTMLInputTypeAttribute } from 'react'
 
 interface OptionType extends OptionTypeBase {
   value: string
@@ -13,24 +13,7 @@ export interface InputPropsInterface {
   isRequired?: boolean
   type: React.HTMLInputTypeAttribute
 }
-interface Invoice {
-  id?: string
-  'Invoice Number': string
-  'Invoice Date': string
-  'Payment Due Date': string
-  Subject: string
-  'Invoice Status': string
-  customerId: string
-  Services: {
-    serviceName: string
-    unitPrice: number
-    quantity: number
-    serviceId: string
-  }[]
-  Notes: string
-  Total: number
-  Discount: number
-}
+
 export interface Notification {
   message: string
   error?: boolean
@@ -47,12 +30,6 @@ export interface Notification_Interface {
   message: string
 }
 
-export interface ServiceNew {
-  name: string
-  price: string
-  description: string
-  categoryId: string
-}
 interface Menu {
   title: string
   isActive?: boolean
@@ -76,29 +53,6 @@ export interface SideBarItem {
       titleId?: string | undefined
     } & React.RefAttributes<SVGSVGElement>
   >
-}
-
-interface PurchaseItem {
-  id?: string
-  'Item Name': string
-  Category: string
-  'Purchase Price': number
-  Description: string
-}
-
-interface Quotation {
-  id?: string
-  'Quotation Number': string
-  'Quotation Date': string
-  Subject: string
-  Customer: string
-  Services: string
-  Notes: string
-}
-
-interface Invoices {
-  invoices: Invoice[]
-  addInvoice: (newInvoice: Invoice) => void
 }
 
 interface ItemStore {
@@ -127,7 +81,6 @@ export {
   Invoice,
   PurchaseItem,
   Quotation,
-  Service,
   Invoices,
   Menu,
   SIDEBAR,

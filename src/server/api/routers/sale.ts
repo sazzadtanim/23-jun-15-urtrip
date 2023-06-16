@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { validateSale } from 'zodType'
+import { validateSale } from 'zodValidator'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 import { prisma } from '~/server/db'
 

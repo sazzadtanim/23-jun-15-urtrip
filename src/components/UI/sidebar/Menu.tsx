@@ -31,7 +31,7 @@ export default function SubMenu(props: Menu) {
           className={`font-poppins text-primaryBlue-100 hover:text-primaryBlue-100 flex w-full items-center justify-between rounded-lg px-2 
           py-3 text-sm antialiased hover:bg-primary-content ${
             router.asPath === props.url
-              ? 'text-white/80  bg-primary-focus'
+              ? 'bg-primary-focus  text-white/80'
               : 'null'
           }`}
         >
