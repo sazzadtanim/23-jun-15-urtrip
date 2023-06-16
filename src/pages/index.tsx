@@ -8,7 +8,7 @@ const Home: NextPage = () => {
       <DynamicHeader title='Urtrip Dashboard' />
       <Top2Menu title='dashboard' />
       <main>
-        <h1 className='prose-2xl text-center text-white'>
+        <h1 className='prose-2xl text-center'>
           This is backend app for UrTrip
         </h1>
       </main>
