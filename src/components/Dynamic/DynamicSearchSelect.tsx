@@ -26,17 +26,17 @@ export default function DynamicSearchSelect<
     <>
       {props.apiData && (
         <>
-          <label className="label" htmlFor="categoryId">
-            <span className="label-text capitalize">{props.label}</span>
+          <label className='label' htmlFor='categoryId'>
+            <span className='label-text capitalize'>{props.label}</span>
           </label>
           <Select
             classNamePrefix={'react-select'}
-            id="categoryId"
+            id='categoryId'
             isClearable
             isSearchable
             escapeClearsValue
             backspaceRemovesValue
-            className="select-multiple grow capitalize placeholder:capitalize"
+            className='select-multiple grow capitalize placeholder:capitalize'
             placeholder={props.placeholder}
             options={props.apiData.map(({ id, name }) => ({
               label: name,
@@ -47,8 +47,8 @@ export default function DynamicSearchSelect<
             }}
           />
           {props.errors[props.fieldId] && (
-            <label className="label">
-              <span className="label-text-alt lowercase text-red-600 first-letter:capitalize">
+            <label className='label'>
+              <span className='text-red-600 label-text-alt lowercase first-letter:capitalize'>
                 {props.errors[props.fieldId]?.message?.toString()}
               </span>
             </label>

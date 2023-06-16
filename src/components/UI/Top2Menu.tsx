@@ -17,7 +17,7 @@ export default function Top2Menu({
   return (
     <div className='flex select-none justify-between rounded-xl bg-base-100 py-2 text-base shadow-md ring-1 drop-shadow-[10px_35px_35px_rgba(33,125,191,0.1)] md:my-5'>
       {/* title */}
-      <div className='prose-h2:bold prose my-2 mx-10'>
+      <div className='prose-h2:bold prose mx-10 my-2'>
         <h2 className='capitalize text-white'>{title}</h2>
       </div>
 

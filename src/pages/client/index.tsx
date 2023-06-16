@@ -2,16 +2,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { InputList } from 'type'
+import { type InputList } from 'type'
 import { type ZodClient } from 'zodType'
 import { validateClient } from 'zodValidator'
-import { useNotification } from 'zustandStore/useNotification'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import Top2Menu from '~/components/UI/Top2Menu'
 
 export default function ClientPage() {
   const router = useRouter()
-  const setNotification = useNotification(s => s.setNotification)
+  // const setNotification = useNotification(s => s.setNotification)
   //   const {
   //     mutate: create,
   //     isSuccess,
@@ -25,7 +24,7 @@ export default function ClientPage() {
     formState: { errors },
   } = useForm<ZodClient>({ resolver: zodResolver(validateClient) })
 
-  async function onSubmitForm(data: ZodClient) {
+  async function onSubmitForm() {
     // create(data)
     await router.push('/client/clients')
   }

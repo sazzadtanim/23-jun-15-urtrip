@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { SideBarItem } from 'offlineData/sidebarList'
+import { type SideBarItem } from 'offlineData/sidebarList'
 import {
   type SVGProps,
   type ForwardRefExoticComponent,

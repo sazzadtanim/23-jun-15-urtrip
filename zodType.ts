@@ -1,14 +1,14 @@
-import { z } from 'zod'
+import { type z } from 'zod'
 import {
-  validateSupplier,
-  validateProvider,
-  validateServiceCategory,
-  validateService,
-  validateClient,
-  validateSale,
-  validateFinancialAccount,
-  validateTransaction,
-  validateInvoice,
+  type validateSupplier,
+  type validateProvider,
+  type validateServiceCategory,
+  type validateService,
+  type validateClient,
+  type validateSale,
+  type validateFinancialAccount,
+  type validateTransaction,
+  type validateInvoice,
 } from 'zodValidator'
 
 export type ZodSupplier = z.infer<typeof validateSupplier>
