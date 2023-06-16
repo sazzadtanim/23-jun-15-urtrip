@@ -13,7 +13,7 @@ import DynamicSelect from '~/components/Dynamic/DynamicSelect'
 import LoadingAndError from '~/components/Dynamic/LoadingAndError'
 import Top2Menu from '~/components/UI/Top2Menu'
 import { api } from '~/utils/api'
-import { saleInputList } from '../../../offlineData/saleInputList'
+import { saleInputList2 } from '~data/saleInputList'
 
 export default function SalePage() {
   const router = useRouter()
@@ -127,22 +127,29 @@ export default function SalePage() {
                   />
                 )}
               </div>
+
               <DynamicInputList
                 errors={errors}
-                inputlist={saleInputList}
+                inputlist={saleInputList2.slice(0, 11)}
                 register={register}
               />
             </div>
 
             {/* Everything client related */}
             <div className='max-w-sm'>
-              <div className='flex items-end justify-between'>
+              <div className='grid max-w-sm items-end justify-between'>
                 <DynamicSearchSelect
                   errors={errors}
                   fieldId='clientId'
                   label='client'
                   setValue={setValue}
                   apiData={clients}
+                />
+
+                <DynamicInputList
+                  errors={errors}
+                  register={register}
+                  inputlist={saleInputList2.slice(10, 19)}
                 />
 
                 <button
@@ -199,6 +206,11 @@ export default function SalePage() {
                   />
                 )}
               </div>
+              <DynamicInputList
+                errors={errors}
+                register={register}
+                inputlist={saleInputList2.slice(20, 29)}
+              />
             </div>
           </div>
 
