@@ -25,7 +25,7 @@ export default function DynamicSearchSelect<
   return (
     <>
       {props.apiData && (
-        <>
+        <div className='grid max-w-sm'>
           <label className='label' htmlFor='categoryId'>
             <span className='label-text capitalize'>{props.label}</span>
           </label>
@@ -53,7 +53,7 @@ export default function DynamicSearchSelect<
               </span>
             </label>
           )}
-        </>
+        </div>
       )}
     </>
   )
