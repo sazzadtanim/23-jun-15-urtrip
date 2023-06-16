@@ -5,6 +5,7 @@ import { providerRouter } from './routers/provider'
 import { saleRouter } from './routers/sale'
 import { serviceRouter } from './routers/service'
 import { supplierRouter } from './routers/supplier'
+import { transactionRouter } from './routers/transaction'
 
 /**
  * This is the primary router for your server.
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   supplier: supplierRouter,
   sale: saleRouter,
   payment: paymentMethodsRouter,
+  transaction: transactionRouter,
 })
 
 // export type definition of API

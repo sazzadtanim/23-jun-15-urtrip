@@ -5,19 +5,22 @@ import { useForm } from 'react-hook-form'
 import { type InputList } from 'type'
 import { type ZodFinancialAccount } from 'zodType'
 import { validateFinancialAccount } from 'zodValidator'
+import { useNotification } from 'zustandStore/useNotification'
 // import { useNotification } from 'zustandStore/useNotification'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
+import LoadingAndError from '~/components/Dynamic/LoadingAndError'
 import Top2Menu from '~/components/UI/Top2Menu'
+import { api } from '~/utils/api'
 
 export default function PaymentMethodPage() {
   const router = useRouter()
-  // const setNotification = useNotification(s => s.setNotification)
-  //   const {
-  //     mutate: create,
-  //     isSuccess,
-  //     error,
-  //     isLoading,
-  //   } = api.client.create.useMutation()
+  const setNotification = useNotification(s => s.setNotification)
+  const {
+    mutate: createPaymentMethod,
+    isSuccess,
+    error,
+    isLoading,
+  } = api.payment.create.useMutation()
 
   const {
     register,
@@ -27,21 +30,21 @@ export default function PaymentMethodPage() {
     resolver: zodResolver(validateFinancialAccount),
   })
 
-  async function onSubmitForm() {
-    // create(data)
+  async function onSubmitForm(data: ZodFinancialAccount) {
+    createPaymentMethod(data)
     await router.push('/client/clients')
   }
 
-  //   if (isSuccess) {
-  //     setNotification({ message: `customer added successfully` })
-  //     void router.push('/sales/customer/customers')
-  //   }
+  if (isSuccess) {
+    setNotification({ message: `customer added successfully` })
+    void router.push('/sales/customer/customers')
+  }
 
   return (
     <>
       <Top2Menu title='create payment account' />
       <div className='max-w-screen-sm select-none rounded-xl'>
-        {/* <LoadingError error={error} isLoading={isLoading} /> */}
+        <LoadingAndError error={error} isLoading={isLoading} />
 
         <form
           className='flex flex-col justify-center space-y-4 rounded-xl bg-base-100 p-10'
@@ -77,7 +80,7 @@ export const clientInputList: InputList<ZodFinancialAccount>[] = [
   {
     label: 'Account holder',
     placeholder: 'e.g. Mr Kebria',
-    type: 'email',
+    type: 'text',
     name: 'account_holder',
   },
   {
