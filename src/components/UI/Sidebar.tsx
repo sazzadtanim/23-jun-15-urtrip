@@ -6,8 +6,8 @@ import { sidebarItems } from 'offlineData/sidebarList'
 
 function Sidebar(): JSX.Element {
   return (
-    <aside className='left-0 top-0 z-10 hidden h-full w-14 select-none flex-col  border-none p-4 text-white drop-shadow-xl transition-all duration-300 hover:w-64 md:fixed  md:flex md:w-64'>
-      <div className='h-full overflow-y-auto rounded-2xl bg-base-200 px-3 py-4 shadow-xl'>
+    <aside className='left-0 top-0 z-10 hidden h-full w-14 select-none flex-col  border-none p-4 text-black drop-shadow-xl transition-all duration-300 hover:w-64 md:fixed  md:flex md:w-64'>
+      <div className='h-full overflow-y-auto rounded-2xl bg-base-100 px-3 py-4 shadow-xl '>
         <CompanyInfo />
         <UserSection />
         <ul className='space-y-4 font-medium'>
