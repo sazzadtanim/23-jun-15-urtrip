@@ -29,25 +29,31 @@ export const validateClient = z.object({
 })
 
 export const validateSale = z.object({
-  details: z.string().optional(),
+  service_details: z.string().optional(),
   flight_dates: z.string().optional(),
   quantity: z.number().optional(),
   net_fare: z.number().optional(),
   quoted_fare: z.number().optional(),
-  paid_amount: z.number().optional(),
+  total_amount: z.number().optional(),
   payment_due_Date: z.string().optional(),
   discount: z.number().optional(),
   co_or_dh: z.number().optional(),
-  expense: z.number().optional(),
-  expense_details: z.string().optional(),
   comission: z.number().optional(),
   status: z.string().optional(),
+
+
+
+
+
+
+  
 
   clientId: z.string(),
   serviceId: z.string(),
   providerId: z.string(),
   supplierId: z.string(),
   expenseId: z.string().optional(),
+  transactionId: z.string(),
 })
 
 export const validateInvoice = z.object({
@@ -68,23 +74,21 @@ export const validateFinancialAccount = z.object({
   account_holder: z.string().nullish(),
   account_number: z.string().nullish(),
   address: z.string().nullish(),
-  phone: z.string().nullish(),
+  phone: z.string().max(15).min(8).regex(phoneRegex, 'Invalid Phone Number!'),
   initial_balance: z.number().or(z.nan()),
 })
 
 export const validateTransaction = z.object({
-  title: z.string().nonempty(),
-  paid_from: z.string(),
-  paid_to: z.string(),
-  transaction_id: z.string(),
-  amount: z.number(),
-})
-
-export const zodFinancialAccountValidator = z.object({
-  title: z.string(),
-  account_holder: z.string(),
-  account_number: z.string(),
-  address: z.string(),
-  phone: z.string(),
-  balance: z.number(),
+  type: z.enum(['payToSupplier', 'paidFromClient', 'payForExpense']).optional(),
+  status: z.string().optional(),
+  paid_amount: z.number().optional(),
+  due_amount: z.number().optional(),
+  due_date: z.date().optional(),
+  paid_date: z.date().optional(),
+  details: z.string().optional(),
+  financialAccountId: z.string(),
+  supplierId: z.string().optional(),
+  clientId: z.string().optional(),
+  expenseId: z.string().optional(),
+  serviceId: z.string().optional(),
 })

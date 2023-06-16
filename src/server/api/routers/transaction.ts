@@ -1,13 +1,13 @@
 import { z } from 'zod'
-import { validateFinancialAccount } from 'zodValidator'
+import { validateTransaction } from 'zodValidator'
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc'
 import { prisma } from '~/server/db'
 
-export const paymentMethodsRouter = createTRPCRouter({
+export const transactionRouter = createTRPCRouter({
   create: publicProcedure
-    .input(validateFinancialAccount)
+    .input(validateTransaction)
     .mutation(async ({ input }) => {
-      const client = await prisma.financialAccount.create({ data: input })
+      const client = await prisma.transaction.create({ data: input })
       return client
     }),
   delete: publicProcedure
@@ -17,20 +17,20 @@ export const paymentMethodsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      return await prisma.financialAccount.delete({ where: { id: input.id } })
+      return await prisma.transaction.delete({ where: { id: input.id } })
     }),
   all: publicProcedure.query(() => {
-    return prisma.financialAccount.findMany()
+    return prisma.transaction.findMany()
   }),
   update: publicProcedure
     .input(
       z.object({
-        data: validateFinancialAccount,
+        data: validateTransaction,
         id: z.string(),
       })
     )
     .mutation(async ({ input }) => {
-      return await prisma.financialAccount.update({
+      return await prisma.transaction.update({
         data: input.data,
         where: { id: input.id },
       })
@@ -42,7 +42,7 @@ export const paymentMethodsRouter = createTRPCRouter({
       })
     )
     .query(async ({ input }) => {
-      return await prisma.financialAccount.findFirst({
+      return await prisma.transaction.findFirst({
         where: { id: input.id },
       })
     }),

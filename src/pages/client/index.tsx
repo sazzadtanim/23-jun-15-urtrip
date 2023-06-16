@@ -5,19 +5,22 @@ import { useForm } from 'react-hook-form'
 import { type InputList } from 'type'
 import { type ZodClient } from 'zodType'
 import { validateClient } from 'zodValidator'
+import { useNotification } from 'zustandStore/useNotification'
 import DynamicButton from '~/components/Dynamic/DynamicButton'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
+import LoadingAndError from '~/components/Dynamic/LoadingAndError'
 import Top2Menu from '~/components/UI/Top2Menu'
+import { api } from '~/utils/api'
 
 export default function ClientPage() {
   const router = useRouter()
-  // const setNotification = useNotification(s => s.setNotification)
-  //   const {
-  //     mutate: create,
-  //     isSuccess,
-  //     error,
-  //     isLoading,
-  //   } = api.client.create.useMutation()
+  const setNotification = useNotification(s => s.setNotification)
+  const {
+    mutate: create,
+    isSuccess,
+    error,
+    isLoading,
+  } = api.client.create.useMutation()
 
   const {
     register,
@@ -25,21 +28,21 @@ export default function ClientPage() {
     formState: { errors },
   } = useForm<ZodClient>({ resolver: zodResolver(validateClient) })
 
-  async function onSubmitForm() {
-    // create(data)
+  async function onSubmitForm(data: ZodClient) {
+    create(data)
     await router.push('/client/clients')
   }
 
-  //   if (isSuccess) {
-  //     setNotification({ message: `customer added successfully` })
-  //     void router.push('/sales/customer/customers')
-  //   }
+  if (isSuccess) {
+    setNotification({ message: `customer added successfully` })
+    void router.push('/sales/customer/customers')
+  }
 
   return (
     <>
       <Top2Menu title='create Client' />
       <div className='max-w-screen-sm select-none rounded-xl'>
-        {/* <LoadingError error={error} isLoading={isLoading} /> */}
+        <LoadingAndError error={error} isLoading={isLoading} />
 
         <form
           className='flex flex-col justify-center space-y-4 rounded-xl bg-base-100 p-10'
