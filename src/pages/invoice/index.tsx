@@ -1,12 +1,10 @@
-/* eslint-disable react/no-children-prop */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { InputList } from 'type'
+import { type InputList } from 'type'
 import { type ZodInvoice } from 'zodType'
 import { validateInvoice } from 'zodValidator'
-import { useNotification } from 'zustandStore/useNotification'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import DynamicSearchSelect from '~/components/Dynamic/DynamicSearchSelect'
 import Modal from '~/components/UI/Modal'
@@ -15,7 +13,7 @@ import Top2Menu from '~/components/UI/Top2Menu'
 export default function ClientPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
-  const setNotification = useNotification(s => s.setNotification)
+
   //   const {
   //     mutate: create,
   //     isSuccess,
@@ -30,7 +28,7 @@ export default function ClientPage() {
     setValue,
   } = useForm<ZodInvoice>({ resolver: zodResolver(validateInvoice) })
 
-  async function onSubmitForm(data: ZodInvoice) {
+  async function onSubmitForm() {
     // create(data)
     await router.push('/client/clients')
   }
