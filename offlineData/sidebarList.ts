@@ -29,6 +29,8 @@ export const sidebarItems: SideBarItem[] = [
     Icon: AcademicCapIcon,
   },
   { title: 'payment method', url: '/payment_method', Icon: BanknotesIcon },
+  { title: 'invoice', url: '/invoice', Icon: BanknotesIcon },
+   // * remove after testing
   {
     title: 'Clients',
     url: '/client/clients_simple_table',

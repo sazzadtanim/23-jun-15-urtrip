@@ -1,22 +1,26 @@
-import { useEffect } from 'react'
+import { type Dispatch, type SetStateAction, useEffect } from 'react'
 import ReactPortal from './ReactPortal'
 
 interface ModalProps {
-  children: React.ReactNode
-  isOpen: boolean
-  handleClose: () => void
+  children?: React.ReactNode
+  isModalOpen: boolean
+  SetIsModalClose: Dispatch<SetStateAction<boolean>>
 }
 
-export default function Modal({ children, isOpen, handleClose }: ModalProps) {
+export default function Modal({
+  children,
+  isModalOpen: isOpen,
+  SetIsModalClose,
+}: ModalProps) {
   // close modal on escape key press
   useEffect(() => {
     const closeOnEscapeKey = (e: KeyboardEvent) =>
-      e.key === 'Escape' ? handleClose() : null
+      e.key === 'Escape' ? SetIsModalClose(true) : null
     document.body.addEventListener('keydown', closeOnEscapeKey)
     return () => {
       document.body.removeEventListener('keydown', closeOnEscapeKey)
     }
-  }, [handleClose])
+  }, [SetIsModalClose])
 
   //disable scroll on modal open
   useEffect(() => {
@@ -31,18 +35,16 @@ export default function Modal({ children, isOpen, handleClose }: ModalProps) {
 
   return (
     <ReactPortal wrapperId='react-portal-model-container '>
-      <>
-        <div className='fixed inset-0 z-40 h-screen w-screen bg-neutral-700 opacity-80 ' />
-        <div className='fixed left-[25%] right-[25%] top-[2%] z-50 box-border flex min-w-fit flex-col rounded bg-white p-10 '>
-          <button
-            className='hover:bg-red-600 self-end rounded border px-8 py-2 hover:text-white'
-            onClick={handleClose}
-          >
-            Close
-          </button>
-          <div className=''> {children}</div>
-        </div>
-      </>
+      <div className='fixed inset-0 z-40 h-screen w-screen bg-primary-content opacity-80 ' />
+      <div className='fixed left-[10%] right-[10%] top-[2%] z-50 box-border flex flex-col rounded bg-white p-10'>
+        <button
+          className='self-end rounded border px-8 py-2 hover:bg-primary hover:text-white'
+          onClick={() => SetIsModalClose(false)}
+        >
+          Close
+        </button>
+        <div className=''> {children}</div>
+      </div>
     </ReactPortal>
   )
 }
