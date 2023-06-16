@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { type InputList } from 'type'
 import { type ZodInvoice } from 'zodType'
 import { validateInvoice } from 'zodValidator'
+import DynamicButton from '~/components/Dynamic/DynamicButton'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import DynamicSearchSelect from '~/components/Dynamic/DynamicSearchSelect'
 import Modal from '~/components/UI/Modal'
@@ -51,14 +52,16 @@ export default function ClientPage() {
         </Modal>
       )}
       <Top2Menu title='create Invoice' />
-      <div className='max-w-screen-sm select-none rounded-xl'>
+
+      <div className='select-none rounded-xl'>
         {/* <LoadingError error={error} isLoading={isLoading} /> */}
 
         <form
-          className='flex flex-col justify-center space-y-4 rounded-xl bg-base-100 p-10'
+          className='grid grid-cols-2 rounded-xl bg-base-100 gap-2'
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onSubmit={handleSubmit(onSubmitForm)}
         >
+          {/* Client */}
           <DynamicSearchSelect
             apiData={[
               { id: '1', name: 'sazzad' },
@@ -70,6 +73,18 @@ export default function ClientPage() {
             setValue={setValue}
           />
 
+          {/* Supplier */}
+          <DynamicSearchSelect
+            apiData={[
+              { id: '1', name: 'sazzad' },
+              { id: '2', name: 'tanim' },
+            ]}
+            errors={errors}
+            fieldId='supplierId'
+            label='Supplier'
+            setValue={setValue}
+          />
+
           {/* Add service in modal */}
 
           <DynamicInputList
@@ -77,9 +92,14 @@ export default function ClientPage() {
             inputlist={clientInputList}
             register={register}
           />
-
-          <input type='submit' id='submit' className='btn-secondary btn my-2' />
+          <DynamicButton
+            size='medium'
+            state='primary'
+            text='Submit'
+            type='submit'
+          />
         </form>
+
         <button
           className='btn-success btn'
           onClick={() => setIsModalOpen(true)}
