@@ -17,7 +17,7 @@ interface Props<T extends FieldValues> {
 
 export default function DynamicInput<T extends FieldValues>(props: Props<T>) {
   return (
-    <div className='form-control w-full max-w-screen-sm'>
+    <div className='form-control max-w-sm'>
       <label className='label' htmlFor={props.field_id}>
         <span className='label-text capitalize'>{props.label}</span>
       </label>
