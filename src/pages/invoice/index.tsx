@@ -40,17 +40,16 @@ export default function ClientPage() {
 
   return (
     <>
-      <button className='btn-success btn' onClick={() => setIsModalOpen(true)}>
-        show modal
-      </button>
-      <Modal
-        SetIsModalClose={() => setIsModalOpen(!isModalOpen)}
-        isModalOpen={isModalOpen}
-      >
-        <div className='bg-white p-20'>
-          <h1>Sazzad</h1>
-        </div>
-      </Modal>
+      {isModalOpen && (
+        <Modal
+          SetIsModalClose={() => setIsModalOpen(!isModalOpen)}
+          isModalOpen={isModalOpen}
+        >
+          <div className='bg-white p-20'>
+            <h1>Sazzad</h1>
+          </div>
+        </Modal>
+      )}
       <Top2Menu title='create Invoice' />
       <div className='max-w-screen-sm select-none rounded-xl'>
         {/* <LoadingError error={error} isLoading={isLoading} /> */}
@@ -81,6 +80,12 @@ export default function ClientPage() {
 
           <input type='submit' id='submit' className='btn-secondary btn my-2' />
         </form>
+        <button
+          className='btn-success btn'
+          onClick={() => setIsModalOpen(true)}
+        >
+          show modal
+        </button>
       </div>
     </>
   )
