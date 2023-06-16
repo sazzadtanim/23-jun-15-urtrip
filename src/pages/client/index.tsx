@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { type InputList } from 'type'
 import { type ZodClient } from 'zodType'
 import { validateClient } from 'zodValidator'
+import DynamicButton from '~/components/Dynamic/DynamicButton'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import Top2Menu from '~/components/UI/Top2Menu'
 
@@ -50,8 +51,12 @@ export default function ClientPage() {
             inputlist={clientInputList}
             register={register}
           />
-
-          <input type='submit' id='submit' className='btn-secondary btn my-2' />
+          <DynamicButton
+            size='medium'
+            state='primary'
+            text='Submit'
+            type='submit'
+          />
         </form>
       </div>
     </>
