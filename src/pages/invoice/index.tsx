@@ -57,7 +57,7 @@ export default function ClientPage() {
         {/* <LoadingError error={error} isLoading={isLoading} /> */}
 
         <form
-          className='grid grid-cols-2 rounded-xl bg-base-100 gap-2'
+          className='grid grid-cols-2 gap-2 rounded-xl bg-base-100'
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onSubmit={handleSubmit(onSubmitForm)}
         >

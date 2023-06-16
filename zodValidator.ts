@@ -29,24 +29,25 @@ export const validateClient = z.object({
 })
 
 export const validateSale = z.object({
-  details: z.string().nullish(),
+  details: z.string().optional(),
   flight_dates: z.string().optional(),
-  quantity: z.coerce.number(),
-  net_fare: z.coerce.number().optional(),
-  quoted_fare: z.coerce.number().optional(),
-  paid_amount: z.coerce.number().optional(),
-  payment_due_Date: z.string().nullish(),
-  discount: z.coerce.number().optional(),
-  co_or_dh: z.coerce.number().optional(),
-  expense: z.coerce.number().optional(),
-  expense_details: z.string().nullish(),
-  comission: z.coerce.number().optional(),
-  status: z.string().nullish(),
+  quantity: z.number().optional(),
+  net_fare: z.number().optional(),
+  quoted_fare: z.number().optional(),
+  paid_amount: z.number().optional(),
+  payment_due_Date: z.string().optional(),
+  discount: z.number().optional(),
+  co_or_dh: z.number().optional(),
+  expense: z.number().optional(),
+  expense_details: z.string().optional(),
+  comission: z.number().optional(),
+  status: z.string().optional(),
 
-  clientId: z.string().min(5),
-  serviceId: z.string().min(5),
-  providerId: z.string().min(5),
-  supplierId: z.string().min(5),
+  clientId: z.string(),
+  serviceId: z.string(),
+  providerId: z.string(),
+  supplierId: z.string(),
+  expenseId: z.string().optional(),
 })
 
 export const validateInvoice = z.object({
@@ -77,4 +78,13 @@ export const validateTransaction = z.object({
   paid_to: z.string(),
   transaction_id: z.string(),
   amount: z.number(),
+})
+
+export const zodFinancialAccountValidator = z.object({
+  title: z.string(),
+  account_holder: z.string(),
+  account_number: z.string(),
+  address: z.string(),
+  phone: z.string(),
+  balance: z.number(),
 })

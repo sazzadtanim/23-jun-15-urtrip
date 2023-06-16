@@ -27,6 +27,19 @@ model Client {
 }
 
 model Service {
+    id          String        @id @default(cuid())
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+    name        String
+    Sale        Sale[]
+    Provider    Provider?     @relation(fields: [providerId], references: [id])
+    providerId  String?
+    Supplier    Supplier?     @relation(fields: [supplierId], references: [id])
+    supplierId  String?
+    Transaction Transaction[]
+}
+
+model ServiceNew {
     id           String   @id @default(cuid())
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
@@ -55,7 +68,7 @@ model Category {
     updatedAt DateTime @updatedAt
     name      String
 
-    Service Service[]
+    Service ServiceNew[]
 }
 
 model Sale {
@@ -81,11 +94,13 @@ model Sale {
     supplierId       String
     expenseId        String?
 
-    client   Client   @relation(fields: [clientId], references: [id])
-    service  Service  @relation(fields: [serviceId], references: [id])
-    provider Provider @relation(fields: [providerId], references: [id])
-    supplier Supplier @relation(fields: [supplierId], references: [id])
-    Expense  Expense? @relation(fields: [expenseId], references: [id])
+    client       Client      @relation(fields: [clientId], references: [id])
+    service      Service     @relation(fields: [serviceId], references: [id])
+    provider     Provider    @relation(fields: [providerId], references: [id])
+    supplier     Supplier    @relation(fields: [supplierId], references: [id])
+    Expense      Expense?    @relation(fields: [expenseId], references: [id])
+    ServiceNew   ServiceNew? @relation(fields: [serviceNewId], references: [id])
+    serviceNewId String?
 
     @@index([clientId])
     @@index([serviceId])
@@ -99,8 +114,9 @@ model Provider {
     updatedAt DateTime @updatedAt
     name      String
 
-    Service Service[]
-    Sale    Sale[]
+    Service    Service[]
+    Sale       Sale[]
+    ServiceNew ServiceNew[]
 }
 
 model Supplier {
@@ -113,6 +129,7 @@ model Supplier {
     Sale        Sale[]
     Transaction Transaction[]
     Service     Service[]
+    ServiceNew  ServiceNew[]
 }
 
 model FinancialAccount {
@@ -148,6 +165,8 @@ model Transaction {
     expense        Expense?         @relation(fields: [expenseId], references: [id])
     payment_method FinancialAccount @relation(fields: [financialAccountId], references: [id])
     Service        Service?         @relation(fields: [serviceId], references: [id])
+    ServiceNew     ServiceNew?      @relation(fields: [serviceNewId], references: [id])
+    serviceNewId   String?
 }
 
 model Expense {

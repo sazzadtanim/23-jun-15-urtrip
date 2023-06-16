@@ -6,7 +6,7 @@ import {
   ReceiptPercentIcon,
   Squares2X2Icon,
   EyeIcon,
-  MapPinIcon
+  MapPinIcon,
 } from '@heroicons/react/24/outline'
 
 export interface SideBarItem {
@@ -36,7 +36,7 @@ export const sidebarItems: SideBarItem[] = [
   },
   { title: 'payment method', url: '/payment_method', Icon: BanknotesIcon },
   { title: 'invoice', url: '/invoice', Icon: BanknotesIcon },
-   // * remove after testing
+  // * remove after testing
   {
     title: 'Clients',
     url: '/client/clients_simple_table',
