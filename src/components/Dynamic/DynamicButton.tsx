@@ -12,7 +12,7 @@ export default function DynamicButton(
   return (
     <button
       className={`flex max-w-fit select-none items-center gap-2 rounded-[10px]  capitalize
-      ${props.state === 'primary' ? 'bg-gradient-purple hover:bg-red-500' : ''} 
+      ${props.state === 'primary' ? 'bg-gradient_purple hover:bg-red-500' : ''} 
       ${props.state === 'secondary' ? 'border-2 border-purple-500' : ''} 
       ${props.state === 'secondary-white' ? 'border-2 border-white' : ''}
       ${props.size === 'medium' ? 'text-md px-6 py-2' : ''}

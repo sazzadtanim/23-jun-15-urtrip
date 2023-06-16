@@ -3,6 +3,9 @@ import { type Config } from 'tailwindcss'
 export default {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    backgroundImage: {
+      gradient_purple: `linear-gradient(112.8deg, #6A36FF -15.76%, #AC5FE6 102.86%)`,
+    },
     colors: {
       white: '#ffffff',
       black: '#333333',
