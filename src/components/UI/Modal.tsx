@@ -9,7 +9,7 @@ interface ModalProps {
 
 export default function Modal({
   children,
-  isModalOpen: isOpen,
+  isModalOpen,
   SetIsModalClose,
 }: ModalProps) {
   // close modal on escape key press
@@ -29,9 +29,9 @@ export default function Modal({
     return () => {
       document.body.style.overflow = 'unset'
     }
-  }, [isOpen])
+  }, [isModalOpen])
 
-  if (!isOpen) return null
+  if (!isModalOpen) return null
 
   return (
     <ReactPortal wrapperId='react-portal-model-container '>
