@@ -2,15 +2,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { InputList } from 'type'
+import { type InputList } from 'type'
 import { type ZodClient, validateClient } from 'zodType'
-import { useNotification } from 'zustandStore/useNotification'
+// import { useNotification } from 'zustandStore/useNotification'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import Top2Menu from '~/components/UI/Top2Menu'
 
 export default function ClientPage() {
   const router = useRouter()
-  const setNotification = useNotification(s => s.setNotification)
+  // const setNotification = useNotification(s => s.setNotification)
   //   const {
   //     mutate: create,
   //     isSuccess,
@@ -24,7 +24,7 @@ export default function ClientPage() {
     formState: { errors },
   } = useForm<ZodClient>({ resolver: zodResolver(validateClient) })
 
-  async function onSubmitForm(data: ZodClient) {
+  async function onSubmitForm() {
     // create(data)
     await router.push('/client/clients')
   }
@@ -36,26 +36,24 @@ export default function ClientPage() {
 
   return (
     <>
-    <Top2Menu title='create Client'/>
-    <div className='max-w-screen-sm select-none rounded-xl'>
-        
-      {/* <LoadingError error={error} isLoading={isLoading} /> */}
+      <Top2Menu title='create Client' />
+      <div className='max-w-screen-sm select-none rounded-xl'>
+        {/* <LoadingError error={error} isLoading={isLoading} /> */}
 
-      <form
-        className='flex flex-col justify-center rounded-xl bg-base-100 p-10 space-y-4'
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onSubmit={handleSubmit(onSubmitForm)}
-      >
-        <DynamicInputList
-          errors={errors}
-          inputlist={clientInputList}
-          register={register}
-        />
+        <form
+          className='flex flex-col justify-center space-y-4 rounded-xl bg-base-100 p-10'
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onSubmit={handleSubmit(onSubmitForm)}
+        >
+          <DynamicInputList
+            errors={errors}
+            inputlist={clientInputList}
+            register={register}
+          />
 
-        <input type='submit' id='submit' className='btn-secondary btn my-2' />
-      </form>
-    </div>
-    
+          <input type='submit' id='submit' className='btn-secondary btn my-2' />
+        </form>
+      </div>
     </>
   )
 }

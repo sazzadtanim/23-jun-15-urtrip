@@ -2,15 +2,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { InputList } from 'type'
+import { type InputList } from 'type'
 import { type ZodFinancialAccount, validateFinancialAccount } from 'zodType'
-import { useNotification } from 'zustandStore/useNotification'
+// import { useNotification } from 'zustandStore/useNotification'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import Top2Menu from '~/components/UI/Top2Menu'
 
 export default function PaymentMethodPage() {
   const router = useRouter()
-  const setNotification = useNotification(s => s.setNotification)
+  // const setNotification = useNotification(s => s.setNotification)
   //   const {
   //     mutate: create,
   //     isSuccess,
@@ -26,7 +26,7 @@ export default function PaymentMethodPage() {
     resolver: zodResolver(validateFinancialAccount),
   })
 
-  async function onSubmitForm(data: ZodFinancialAccount) {
+  async function onSubmitForm() {
     // create(data)
     await router.push('/client/clients')
   }

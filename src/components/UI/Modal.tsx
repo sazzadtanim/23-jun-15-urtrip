@@ -30,17 +30,17 @@ export default function Modal({ children, isOpen, handleClose }: ModalProps) {
   if (!isOpen) return null
 
   return (
-    <ReactPortal wrapperId="react-portal-model-container ">
+    <ReactPortal wrapperId='react-portal-model-container '>
       <>
-        <div className="fixed inset-0 z-40 h-screen w-screen bg-neutral-700 opacity-80 " />
-        <div className="fixed left-[25%] right-[25%] top-[2%] z-50 box-border flex min-w-fit flex-col rounded bg-white p-10 ">
+        <div className='fixed inset-0 z-40 h-screen w-screen bg-neutral-700 opacity-80 ' />
+        <div className='fixed left-[25%] right-[25%] top-[2%] z-50 box-border flex min-w-fit flex-col rounded bg-white p-10 '>
           <button
-            className="self-end rounded border px-8 py-2 hover:bg-red-600 hover:text-white"
+            className='hover:bg-red-600 self-end rounded border px-8 py-2 hover:text-white'
             onClick={handleClose}
           >
             Close
           </button>
-          <div className=""> {children}</div>
+          <div className=''> {children}</div>
         </div>
       </>
     </ReactPortal>
