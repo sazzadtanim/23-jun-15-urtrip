@@ -1,3 +1,5 @@
+import { type HTMLInputTypeAttribute } from "react"
+
 interface OptionType extends OptionTypeBase {
   value: string
   label: string
@@ -115,7 +117,7 @@ export interface InputList<T> {
   name: keyof T
   label: string
   placeholder: string
-  type: string
+  type: HTMLInputTypeAttribute
   isRequired?: boolean
 }
 
