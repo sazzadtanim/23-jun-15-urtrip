@@ -1,15 +1,19 @@
 /* eslint-disable react/no-children-prop */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { InputList } from 'type'
-import { type ZodClient } from 'zodType'
-import { validateClient } from 'zodValidator'
+import { type ZodInvoice } from 'zodType'
+import { validateInvoice } from 'zodValidator'
 import { useNotification } from 'zustandStore/useNotification'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
+import DynamicSearchSelect from '~/components/Dynamic/DynamicSearchSelect'
+import Modal from '~/components/UI/Modal'
 import Top2Menu from '~/components/UI/Top2Menu'
 
 export default function ClientPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
   const setNotification = useNotification(s => s.setNotification)
   //   const {
@@ -23,9 +27,10 @@ export default function ClientPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ZodClient>({ resolver: zodResolver(validateClient) })
+    setValue,
+  } = useForm<ZodInvoice>({ resolver: zodResolver(validateInvoice) })
 
-  async function onSubmitForm(data: ZodClient) {
+  async function onSubmitForm(data: ZodInvoice) {
     // create(data)
     await router.push('/client/clients')
   }
@@ -37,7 +42,18 @@ export default function ClientPage() {
 
   return (
     <>
-      <Top2Menu title='create Client' />
+      <button className='btn-success btn' onClick={() => setIsModalOpen(true)}>
+        show modal
+      </button>
+      <Modal
+        SetIsModalClose={() => setIsModalOpen(!isModalOpen)}
+        isModalOpen={isModalOpen}
+      >
+        <div className='bg-white p-20'>
+          <h1>Sazzad</h1>
+        </div>
+      </Modal>
+      <Top2Menu title='create Invoice' />
       <div className='max-w-screen-sm select-none rounded-xl'>
         {/* <LoadingError error={error} isLoading={isLoading} /> */}
 
@@ -46,6 +62,19 @@ export default function ClientPage() {
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onSubmit={handleSubmit(onSubmitForm)}
         >
+          <DynamicSearchSelect
+            apiData={[
+              { id: '1', name: 'sazzad' },
+              { id: '2', name: 'tanim' },
+            ]}
+            errors={errors}
+            fieldId='clientId'
+            label='client'
+            setValue={setValue}
+          />
+
+          {/* Add service in modal */}
+
           <DynamicInputList
             errors={errors}
             inputlist={clientInputList}
@@ -59,42 +88,54 @@ export default function ClientPage() {
   )
 }
 
-export const clientInputList: InputList<ZodClient>[] = [
+export const clientInputList: InputList<ZodInvoice>[] = [
   {
-    label: 'Name',
-    placeholder: 'e.g. Mr Rahim',
-    type: 'text',
-    name: 'name',
-  },
-  {
-    label: 'phone',
+    label: 'co_or_dh',
     placeholder: '015XXXXXXXX',
     type: 'tel',
-    name: 'phone',
+    name: 'co_or_dh',
   },
   {
-    label: 'email',
+    label: 'discount',
     placeholder: 'someone@email.com',
     type: 'email',
-    name: 'email',
+    name: 'discount',
   },
   {
-    label: 'Address',
+    label: 'expenseId',
     placeholder:
       '32, Justice SM Morshed Sharany Agargoan Sher-e-Bangla Nagar Dhaka-1207',
     type: 'text',
-    name: 'address',
+    name: 'expenseId',
   },
   {
-    label: 'reference',
+    label: 'paid_amount',
     placeholder: 'e.g. Mr Sumon',
     type: 'text',
-    name: 'reference',
+    name: 'paid_amount',
   },
   {
-    label: 'Note',
+    label: 'payment_due_Date',
     placeholder: 'write something',
     type: 'text',
-    name: 'note',
+    name: 'payment_due_Date',
+  },
+  {
+    label: 'payment_status',
+    placeholder: 'write something',
+    type: 'text',
+    name: 'payment_status',
+  },
+  {
+    label: 'serviceId',
+    placeholder: 'write something',
+    type: 'text',
+    name: 'serviceId',
+  },
+  {
+    label: 'supplierId',
+    placeholder: 'write something',
+    type: 'text',
+    name: 'supplierId',
   },
 ]
