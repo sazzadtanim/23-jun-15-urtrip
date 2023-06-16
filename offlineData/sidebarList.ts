@@ -6,6 +6,7 @@ import {
   ReceiptPercentIcon,
   Squares2X2Icon,
   EyeIcon,
+  MapPinIcon
 } from '@heroicons/react/24/outline'
 
 export interface SideBarItem {
@@ -23,6 +24,11 @@ export interface SideBarItem {
 export const sidebarItems: SideBarItem[] = [
   { title: 'Dashboard', url: '/', Icon: HomeIcon },
   // * Client demo, remove after testing
+  {
+    title: 'sale',
+    url: '/sale',
+    Icon: MapPinIcon,
+  },
   {
     title: 'Clients',
     url: '/client',
