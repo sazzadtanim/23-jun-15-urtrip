@@ -13,7 +13,7 @@ import DynamicSelect from '~/components/Dynamic/DynamicSelect'
 import LoadingAndError from '~/components/Dynamic/LoadingAndError'
 import Top2Menu from '~/components/UI/Top2Menu'
 import { api } from '~/utils/api'
-import { saleInputList } from './saleInputList'
+import { saleInputList } from '../../../offlineData/saleInputList'
 
 export default function SalePage() {
   const router = useRouter()
