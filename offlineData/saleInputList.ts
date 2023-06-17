@@ -46,42 +46,6 @@ export const saleInputList: InputList<ZodSale>[] = [
     type: 'number',
     name: 'total_amount',
   },
-  // {
-  //   label: 'payment due date',
-  //   placeholder: '',
-  //   type: 'date',
-  //   name: 'payment_due_Date',
-  // },
-  // {
-  //   label: 'CO/DH',
-  //   placeholder: 'e.g. 500',
-  //   type: 'number',
-  //   name: 'co_or_dh',
-  // },
-  // {
-  //   label: 'Expense',
-  //   placeholder: 'e.g. 500',
-  //   type: 'number',
-  //   name: 'expense',
-  // },
-  // {
-  //   label: 'Expense details',
-  //   placeholder: 'e.g. express delivery',
-  //   type: 'text',
-  //   name: 'expense_details',
-  // },
-  // {
-  //   label: 'comission',
-  //   placeholder: 'amount in BDT',
-  //   type: 'number',
-  //   name: 'comission',
-  // },
-  // {
-  //   label: 'status',
-  //   placeholder: 'e.g. 4',
-  //   type: 'text',
-  //   name: 'status',
-  // },
 ]
 
 export const saleInputList2: InputList<ZodSale>[] = [

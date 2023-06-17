@@ -6,10 +6,10 @@ import { type ZodSale } from 'zodType'
 import { validateSale } from 'zodValidator'
 import { useNotification } from 'zustandStore/useNotification'
 import DynamicButton from '~/components/Dynamic/DynamicButton'
+import DynamicInput from '~/components/Dynamic/DynamicInput'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import DynamicModal from '~/components/Dynamic/DynamicModal'
 import DynamicSearchSelect from '~/components/Dynamic/DynamicSearchSelect'
-import DynamicSelect from '~/components/Dynamic/DynamicSelect'
 import LoadingAndError from '~/components/Dynamic/LoadingAndError'
 import Top2Menu from '~/components/UI/Top2Menu'
 import { api } from '~/utils/api'
@@ -20,6 +20,7 @@ export default function SalePage() {
   const { mutate: createSupplier } = api.supplier.create.useMutation()
   const { mutate: createProvider } = api.provider.create.useMutation()
   const { mutate: createService } = api.service.create.useMutation()
+  const { data: financialAccounts } = api.payment.all.useQuery()
   const [isSupplierModalVisible, setIsSupplierModalVisible] = useState(false)
   const [isProviderModalVisible, setIsProviderModalVisible] = useState(false)
   const [isServiceModalVisible, setIsServiceModalVisible] = useState(false)
@@ -41,6 +42,7 @@ export default function SalePage() {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm<ZodSale>({ resolver: zodResolver(validateSale) })
 
   async function onSubmitForm(data: ZodSale) {
@@ -138,41 +140,105 @@ export default function SalePage() {
             {/* Everything client related */}
             <div className='max-w-sm'>
               <div className='grid max-w-sm items-end justify-between'>
+                <div className='flex max-w-sm items-end justify-end'>
+                  <DynamicSearchSelect
+                    errors={errors}
+                    fieldId='clientId'
+                    label='client'
+                    setValue={setValue}
+                    apiData={clients}
+                  />
+                  <button
+                    className='btn-success btn-xs btn'
+                    type='button'
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    onClick={async () => await router.push('/client')}
+                  >
+                    Add Client
+                  </button>
+                </div>
+
                 <DynamicSearchSelect
+                  apiData={[
+                    { id: '1', name: 'Paid' },
+                    { id: '2', name: 'Due' },
+                    { id: '3', name: 'Partial' },
+                  ]}
                   errors={errors}
-                  fieldId='clientId'
-                  label='client'
                   setValue={setValue}
-                  apiData={clients}
+                  fieldId='client_payment_status'
+                  label='client payment status'
                 />
 
-                <DynamicInputList
-                  errors={errors}
-                  register={register}
-                  inputlist={saleInputList2.slice(10, 19)}
-                />
+                {watch('client_payment_status') === '2' && (
+                  <DynamicInput
+                    field_id='client_payment_paid_amount'
+                    label='paid amount'
+                    errors={errors}
+                    register={register}
+                    type='number'
+                    placeholder='e.g. 2000'
+                  />
+                )}
 
-                <button
-                  className='btn-success btn-xs btn'
-                  type='button'
-                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                  onClick={async () => await router.push('/client')}
-                >
-                  Add Client
-                </button>
+                {watch('client_payment_status') === '2' && (
+                  <DynamicInput
+                    field_id='client_payment_due_amount'
+                    label='due amount'
+                    errors={errors}
+                    register={register}
+                    type='number'
+                    placeholder='e.g. 2000'
+                  />
+                )}
+
+                {watch('client_payment_status') === '2' && (
+                  <DynamicInput
+                    field_id='client_payment_paid_date'
+                    label='paid date'
+                    errors={errors}
+                    register={register}
+                    type='date'
+                    placeholder='e.g. 2000'
+                  />
+                )}
+
+                {watch('client_payment_status') === '2' && (
+                  <DynamicInput
+                    field_id='client_payment_due_date'
+                    label='due date'
+                    errors={errors}
+                    register={register}
+                    type='date'
+                    placeholder='e.g. 2000'
+                  />
+                )}
+
+                {financialAccounts &&
+                  watch('client_payment_status') === '2' && (
+                    <DynamicSearchSelect
+                      apiData={financialAccounts.map(account => ({
+                        id: account.id,
+                        name: account.title ?? '',
+                      }))}
+                      errors={errors}
+                      fieldId='client_payment_financialAccountId'
+                      label='payment method'
+                      setValue={setValue}
+                    />
+                  )}
+
+                {watch('client_payment_status') === '2' && (
+                  <DynamicInput
+                    field_id='client_payment_details'
+                    label='payment details'
+                    errors={errors}
+                    register={register}
+                    type='text'
+                    placeholder='e.g. transaction id'
+                  />
+                )}
               </div>
-
-              <DynamicSelect
-                data={[
-                  { id: '1', name: 'due' },
-                  { id: '2', name: 'paid' },
-                  { id: '3', name: 'partial' },
-                ]}
-                errors={errors}
-                fieldId='total_amount'
-                label='payment status'
-                register={register}
-              />
             </div>
 
             {/* Everything Supplier related */}
