@@ -13,6 +13,7 @@ interface Props<T extends FieldValues> {
   label: string
   placeholder?: string
   type: HTMLInputTypeAttribute
+  value?:string|number
 }
 
 export default function DynamicInput<T extends FieldValues>(props: Props<T>) {
@@ -32,6 +33,7 @@ export default function DynamicInput<T extends FieldValues>(props: Props<T>) {
         defaultValue={
           props.type === 'date' ? new Date().toLocaleDateString('en-CA') : ''
         }
+        value={props.value}
       />
       {props.errors[props.field_id] && (
         <label className='label'>

@@ -39,7 +39,6 @@ export const validateSale = z.object({
   discount: z.number().optional(),
   co_or_dh: z.number().optional(),
   comission: z.number().optional(),
-  status: z.string().optional(),
 
   // client payment
   client_payment_type: z.enum(['paidFromClient']),
