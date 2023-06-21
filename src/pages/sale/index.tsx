@@ -179,6 +179,11 @@ export default function SalePage() {
                     register={register}
                     type='number'
                     placeholder='e.g. 2000'
+                    value={
+                      watch('client_payment_status') === 'paid'
+                        ? watch('total_amount')
+                        : undefined
+                    }
                   />
                 )}
 
@@ -191,6 +196,11 @@ export default function SalePage() {
                     register={register}
                     type='number'
                     placeholder='e.g. 2000'
+                    value={
+                      watch('client_payment_status') === 'due'
+                        ? watch('total_amount')
+                        : undefined
+                    }
                   />
                 )}
 
@@ -294,19 +304,23 @@ export default function SalePage() {
               {(watch('supplier_payment_status') === 'paid' ||
                 watch('supplier_payment_status') === 'partial') && (
                 <DynamicInput
-                  field_id='client_payment_paid_amount'
+                  field_id='supplier_payment_paid_amount'
                   label='paid amount'
                   errors={errors}
                   register={register}
                   type='number'
-                  value={watch('total_amount')}
+                  value={
+                    watch('supplier_payment_status') === 'paid'
+                      ? watch('total_amount')
+                      : undefined
+                  }
                 />
               )}
 
               {(watch('supplier_payment_status') === 'due' ||
                 watch('supplier_payment_status') === 'partial') && (
                 <DynamicInput
-                  field_id='client_payment_due_amount'
+                  field_id='supplier_payment_due_amount'
                   label='due amount'
                   errors={errors}
                   register={register}
@@ -357,7 +371,7 @@ export default function SalePage() {
               {(watch('supplier_payment_status') === 'paid' ||
                 watch('supplier_payment_status') === 'partial') && (
                 <DynamicInput
-                  field_id='client_payment_details'
+                  field_id='supplier_payment_details'
                   label='payment details'
                   errors={errors}
                   register={register}
