@@ -66,7 +66,7 @@ export const saleInputList2: InputList<ZodSale>[] = [
     label: 'Quantity',
     placeholder: 'e.g. Enter quantity',
     type: 'number',
-    isRequired:true
+    isRequired: true,
   },
   {
     name: 'net_fare',
@@ -110,19 +110,7 @@ export const saleInputList2: InputList<ZodSale>[] = [
     placeholder: 'e.g. Enter commission',
     type: 'number',
   },
-  {
-    name: 'status',
-    label: 'Status',
-    placeholder: 'e.g. Enter status',
-    type: 'text',
-  },
   // client payment
-  {
-    name: 'client_payment_type',
-    label: 'Client Payment Type',
-    placeholder: 'e.g. Enter client payment type',
-    type: 'text',
-  },
   {
     name: 'client_payment_status',
     label: 'Client Payment Status',
@@ -145,13 +133,13 @@ export const saleInputList2: InputList<ZodSale>[] = [
     name: 'client_payment_due_date',
     label: 'Client Payment Due Date',
     placeholder: 'e.g. Enter client payment due date',
-    type: 'text',
+    type: 'date',
   },
   {
     name: 'client_payment_paid_date',
     label: 'Client Payment Paid Date',
-    placeholder: 'e.g. Enter client payment paid date',
-    type: 'text',
+    placeholder:'',
+    type: 'date',
   },
   {
     name: 'client_payment_details',

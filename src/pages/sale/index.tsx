@@ -132,7 +132,7 @@ export default function SalePage() {
 
               <DynamicInputList
                 errors={errors}
-                inputlist={saleInputList2.slice(0, 11)}
+                inputlist={saleInputList2.slice(0, 10)}
                 register={register}
               />
             </div>
@@ -160,9 +160,9 @@ export default function SalePage() {
 
                 <DynamicSearchSelect
                   apiData={[
-                    { id: '1', name: 'Paid' },
-                    { id: '2', name: 'Due' },
-                    { id: '3', name: 'Partial' },
+                    { id: 'paid', name: 'Paid' },
+                    { id: 'due', name: 'Due' },
+                    { id: 'partial', name: 'Partial' },
                   ]}
                   errors={errors}
                   setValue={setValue}
@@ -170,7 +170,8 @@ export default function SalePage() {
                   label='client payment status'
                 />
 
-                {watch('client_payment_status') === '2' && (
+                {(watch('client_payment_status') === 'paid' ||
+                  watch('client_payment_status') === 'partial') && (
                   <DynamicInput
                     field_id='client_payment_paid_amount'
                     label='paid amount'
@@ -178,10 +179,16 @@ export default function SalePage() {
                     register={register}
                     type='number'
                     placeholder='e.g. 2000'
+                    value={
+                      watch('client_payment_status') === 'paid'
+                        ? watch('total_amount')
+                        : undefined
+                    }
                   />
                 )}
 
-                {watch('client_payment_status') === '2' && (
+                {(watch('client_payment_status') === 'due' ||
+                  watch('client_payment_status') === 'partial') && (
                   <DynamicInput
                     field_id='client_payment_due_amount'
                     label='due amount'
@@ -189,10 +196,16 @@ export default function SalePage() {
                     register={register}
                     type='number'
                     placeholder='e.g. 2000'
+                    value={
+                      watch('client_payment_status') === 'due'
+                        ? watch('total_amount')
+                        : undefined
+                    }
                   />
                 )}
 
-                {watch('client_payment_status') === '2' && (
+                {(watch('client_payment_status') === 'paid' ||
+                  watch('client_payment_status') === 'partial') && (
                   <DynamicInput
                     field_id='client_payment_paid_date'
                     label='paid date'
@@ -203,7 +216,8 @@ export default function SalePage() {
                   />
                 )}
 
-                {watch('client_payment_status') === '2' && (
+                {(watch('client_payment_status') === 'due' ||
+                  watch('client_payment_status') === 'partial') && (
                   <DynamicInput
                     field_id='client_payment_due_date'
                     label='due date'
@@ -215,7 +229,8 @@ export default function SalePage() {
                 )}
 
                 {financialAccounts &&
-                  watch('client_payment_status') === '2' && (
+                  (watch('client_payment_status') === 'paid' ||
+                    watch('client_payment_status') === 'partial') && (
                     <DynamicSearchSelect
                       apiData={financialAccounts.map(account => ({
                         id: account.id,
@@ -228,7 +243,8 @@ export default function SalePage() {
                     />
                   )}
 
-                {watch('client_payment_status') === '2' && (
+                {(watch('client_payment_status') === 'paid' ||
+                  watch('client_payment_status') === 'partial') && (
                   <DynamicInput
                     field_id='client_payment_details'
                     label='payment details'
@@ -255,7 +271,7 @@ export default function SalePage() {
                   />
                 </div>
                 <button
-                  className='btn-xs btn'
+                  className='btn-success btn-xs btn'
                   type='button'
                   onClick={() => setIsSupplierModalVisible(true)}
                 >
@@ -272,11 +288,97 @@ export default function SalePage() {
                   />
                 )}
               </div>
-              <DynamicInputList
+
+              <DynamicSearchSelect
+                apiData={[
+                  { id: 'paid', name: 'Paid' },
+                  { id: 'due', name: 'Due' },
+                  { id: 'partial', name: 'Partial' },
+                ]}
                 errors={errors}
-                register={register}
-                inputlist={saleInputList2.slice(20, 29)}
+                setValue={setValue}
+                fieldId='supplier_payment_status'
+                label='payment status'
               />
+
+              {(watch('supplier_payment_status') === 'paid' ||
+                watch('supplier_payment_status') === 'partial') && (
+                <DynamicInput
+                  field_id='supplier_payment_paid_amount'
+                  label='paid amount'
+                  errors={errors}
+                  register={register}
+                  type='number'
+                  value={
+                    watch('supplier_payment_status') === 'paid'
+                      ? watch('total_amount')
+                      : undefined
+                  }
+                />
+              )}
+
+              {(watch('supplier_payment_status') === 'due' ||
+                watch('supplier_payment_status') === 'partial') && (
+                <DynamicInput
+                  field_id='supplier_payment_due_amount'
+                  label='due amount'
+                  errors={errors}
+                  register={register}
+                  type='number'
+                  placeholder='e.g. 2000'
+                />
+              )}
+
+              {(watch('supplier_payment_status') === 'paid' ||
+                watch('supplier_payment_status') === 'partial') && (
+                <DynamicInput
+                  field_id='client_payment_paid_date'
+                  label='paid date'
+                  errors={errors}
+                  register={register}
+                  type='date'
+                  placeholder='e.g. 2000'
+                />
+              )}
+
+              {(watch('supplier_payment_status') === 'due' ||
+                watch('supplier_payment_status') === 'partial') && (
+                <DynamicInput
+                  field_id='client_payment_due_date'
+                  label='due date'
+                  errors={errors}
+                  register={register}
+                  type='date'
+                  placeholder='e.g. 2000'
+                />
+              )}
+
+              {financialAccounts &&
+                (watch('supplier_payment_status') === 'paid' ||
+                  watch('supplier_payment_status') === 'partial') && (
+                  <DynamicSearchSelect
+                    apiData={financialAccounts.map(account => ({
+                      id: account.id,
+                      name: account.title ?? '',
+                    }))}
+                    errors={errors}
+                    fieldId='client_payment_financialAccountId'
+                    label='payment method'
+                    setValue={setValue}
+                  />
+                )}
+
+              {(watch('supplier_payment_status') === 'paid' ||
+                watch('supplier_payment_status') === 'partial') && (
+                <DynamicInput
+                  field_id='supplier_payment_details'
+                  label='payment details'
+                  errors={errors}
+                  register={register}
+                  type='text'
+                  placeholder='e.g. transaction id'
+                />
+              )}
             </div>
           </div>
 
