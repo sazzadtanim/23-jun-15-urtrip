@@ -10,6 +10,7 @@ import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import DynamicModal from '~/components/Dynamic/DynamicModal'
 import DynamicSearchSelect from '~/components/Dynamic/DynamicSearchSelect'
 import LoadingAndError from '~/components/Dynamic/LoadingAndError'
+import Transaction from '~/components/Transaction'
 import Top2Menu from '~/components/UI/Top2Menu'
 import { api } from '~/utils/api'
 import { saleInputListByTanim } from '~data/saleInputList'
@@ -136,34 +137,25 @@ export default function SalePage() {
             </div>
 
             {/* Everything Client related */}
-            <div className='flex max-w-screen-sm items-end justify-between'>
-              <div className='grow'>
-                <DynamicSearchSelect
-                  errors={errors}
-                  fieldId='clientId'
-                  label='client'
-                  setValue={setValue}
-                  apiData={clients}
-                />
-              </div>
+            <div className='flex max-w-sm items-end justify-end'>
+              <DynamicSearchSelect
+                errors={errors}
+                fieldId='clientId'
+                label='client'
+                setValue={setValue}
+                apiData={clients}
+              />
               <button
                 className='btn-success btn-xs btn'
                 type='button'
-                onClick={() => setIsSupplierModalVisible(true)}
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                onClick={async () => await router.push('/client')}
               >
                 Add Client
               </button>
-              {isSupplierModalVisible && (
-                <DynamicModal
-                  create={createSupplier}
-                  isModalVisible={isSupplierModalVisible}
-                  label='supplier'
-                  placeholder='e.g. ShareTrip'
-                  refetch={refetchSupplier}
-                  setIsModalVisible={setIsSupplierModalVisible}
-                />
-              )}
             </div>
+
+            <Transaction a='ss'/>
 
             {/* Everything Supplier related */}
             <div className='flex max-w-screen-sm items-end justify-between'>
@@ -207,131 +199,6 @@ export default function SalePage() {
     </>
   )
 }
-
-// function ClientForm() {
-//   return (
-//     <>
-//       <div className='max-w-sm'>
-//         <div className='grid max-w-sm items-end justify-between'>
-//           <div className='flex max-w-sm items-end justify-end'>
-//             <DynamicSearchSelect
-//               errors={errors}
-//               fieldId='clientId'
-//               label='client'
-//               setValue={setValue}
-//               apiData={clients}
-//             />
-//             <button
-//               className='btn-success btn-xs btn'
-//               type='button'
-//               // eslint-disable-next-line @typescript-eslint/no-misused-promises
-//               onClick={async () => await router.push('/client')}
-//             >
-//               Add Client
-//             </button>
-//           </div>
-
-//           <DynamicSearchSelect
-//             apiData={[
-//               { id: 'paid', name: 'Paid' },
-//               { id: 'due', name: 'Due' },
-//               { id: 'partial', name: 'Partial' },
-//             ]}
-//             errors={errors}
-//             setValue={setValue}
-//             fieldId='client_payment_status'
-//             label='client payment status'
-//           />
-
-//           {(watch('client_payment_status') === 'paid' ||
-//             watch('client_payment_status') === 'partial') && (
-//             <DynamicInput
-//               field_id='client_payment_paid_amount'
-//               label='paid amount'
-//               errors={errors}
-//               register={register}
-//               type='number'
-//               placeholder='e.g. 2000'
-//               value={
-//                 watch('client_payment_status') === 'paid'
-//                   ? watch('total_amount')
-//                   : undefined
-//               }
-//             />
-//           )}
-
-//           {(watch('client_payment_status') === 'due' ||
-//             watch('client_payment_status') === 'partial') && (
-//             <DynamicInput
-//               field_id='client_payment_due_amount'
-//               label='due amount'
-//               errors={errors}
-//               register={register}
-//               type='number'
-//               placeholder='e.g. 2000'
-//               value={
-//                 watch('client_payment_status') === 'due'
-//                   ? watch('total_amount')
-//                   : undefined
-//               }
-//             />
-//           )}
-
-//           {(watch('client_payment_status') === 'paid' ||
-//             watch('client_payment_status') === 'partial') && (
-//             <DynamicInput
-//               field_id='client_payment_paid_date'
-//               label='paid date'
-//               errors={errors}
-//               register={register}
-//               type='date'
-//               placeholder='e.g. 2000'
-//             />
-//           )}
-
-//           {(watch('client_payment_status') === 'due' ||
-//             watch('client_payment_status') === 'partial') && (
-//             <DynamicInput
-//               field_id='client_payment_due_date'
-//               label='due date'
-//               errors={errors}
-//               register={register}
-//               type='date'
-//               placeholder='e.g. 2000'
-//             />
-//           )}
-
-//           {financialAccounts &&
-//             (watch('client_payment_status') === 'paid' ||
-//               watch('client_payment_status') === 'partial') && (
-//               <DynamicSearchSelect
-//                 apiData={financialAccounts.map(account => ({
-//                   id: account.id,
-//                   name: account.title ?? '',
-//                 }))}
-//                 errors={errors}
-//                 fieldId='client_payment_financialAccountId'
-//                 label='payment method'
-//                 setValue={setValue}
-//               />
-//             )}
-
-//           {(watch('client_payment_status') === 'paid' ||
-//             watch('client_payment_status') === 'partial') && (
-//             <DynamicInput
-//               field_id='client_payment_details'
-//               label='payment details'
-//               errors={errors}
-//               register={register}
-//               type='text'
-//               placeholder='e.g. transaction id'
-//             />
-//           )}
-//         </div>
-//       </div>
-//     </>
-//   )
-// }
 
 // function SupplierForm(){
 //   return <>

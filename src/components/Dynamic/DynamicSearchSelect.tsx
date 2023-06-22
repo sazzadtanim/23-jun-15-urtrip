@@ -36,7 +36,7 @@ export default function DynamicSearchSelect<
             isSearchable
             escapeClearsValue
             backspaceRemovesValue
-            className='select-multiple grow capitalize placeholder:capitalize'
+            className='select-multiple grow capitalize placeholder:capitalize dark:text-black'
             placeholder={props.placeholder}
             options={props.apiData.map(({ id, name }) => ({
               label: name,
