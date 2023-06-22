@@ -107,7 +107,7 @@ export const validateTransaction = z.object({
   due_date: z.string().optional(),
   paid_date: z.string().optional(),
   details: z.string().optional(),
-  financialAccountId: z.string().optional(),
+  financialAccountId: z.string(),
   supplierId: z.string().optional(),
   clientId: z.string().optional(),
   expenseId: z.string().optional(),
