@@ -135,16 +135,16 @@ export default function SalePage() {
               />
             </div>
 
+            {/* Everything Client related */}
             <div className='flex max-w-screen-sm items-end justify-between'>
               <div className='grow'>
-              <DynamicSearchSelect
-              errors={errors}
-              fieldId='clientId'
-              label='client'
-              setValue={setValue}
-              apiData={clients}
-            />
-
+                <DynamicSearchSelect
+                  errors={errors}
+                  fieldId='clientId'
+                  label='client'
+                  setValue={setValue}
+                  apiData={clients}
+                />
               </div>
               <button
                 className='btn-success btn-xs btn'
@@ -164,7 +164,6 @@ export default function SalePage() {
                 />
               )}
             </div>
-
 
             {/* Everything Supplier related */}
             <div className='flex max-w-screen-sm items-end justify-between'>
