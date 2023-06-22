@@ -27,40 +27,31 @@ model Client {
 }
 
 model Service {
-    id          String        @id @default(cuid())
-    createdAt   DateTime      @default(now())
-    updatedAt   DateTime      @updatedAt
-    name        String
-    Sale        Sale[]
-    Provider    Provider?     @relation(fields: [providerId], references: [id])
-    providerId  String?
-    Supplier    Supplier?     @relation(fields: [supplierId], references: [id])
-    supplierId  String?
-    Transaction Transaction[]
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+
+    Sale Sale[]
 }
 
 model Sale {
-    id               String   @id @default(cuid())
-    createdAt        DateTime @default(now())
-    updatedAt        DateTime @updatedAt
-    service_details  String?
-    flight_dates     String?
-    quantity         Decimal?
-    net_fare         Decimal?
-    quoted_fare      Decimal?
-    total_amount     Decimal?
-    payment_due_Date String?
-    discount         Decimal?
-    co_or_dh         Decimal?
-    comission        Decimal?
-    status           String?
+    id              String   @id @default(cuid())
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    service_details String?
+    flight_dates    String?
+    quantity        Decimal?
+    net_fare        Decimal?
+    quoted_fare     Decimal?
+    total_amount    Decimal?
+    discount        Decimal?
 
-    clientId      String
-    serviceId     String
-    providerId    String
-    supplierId    String
-    expenseId     String?
-    transactionId String
+    clientId   String
+    serviceId  String
+    providerId String
+    supplierId String
+    expenseId  String?
 
     transactions Transaction[]
 
@@ -68,7 +59,8 @@ model Sale {
     service  Service  @relation(fields: [serviceId], references: [id])
     provider Provider @relation(fields: [providerId], references: [id])
     supplier Supplier @relation(fields: [supplierId], references: [id])
-    Expense  Expense? @relation(fields: [expenseId], references: [id])
+
+    Expense Expense? @relation(fields: [expenseId], references: [id])
 
     @@index([clientId])
     @@index([serviceId])
@@ -81,9 +73,7 @@ model Provider {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     name      String
-
-    Service Service[]
-    Sale    Sale[]
+    Sale      Sale[]
 }
 
 model Supplier {
@@ -95,7 +85,6 @@ model Supplier {
     net_fare    Decimal?
     Sale        Sale[]
     Transaction Transaction[]
-    Service     Service[]
 }
 
 model FinancialAccount {
@@ -114,7 +103,7 @@ model Transaction {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
 
-    type        String? // payToSupplier/paidFromClient/payForExpense
+    type        String? // payToSupplier/paidFromClient/payForExpense// debit//credit
     status      String?
     paid_amount Decimal?
     due_amount  Decimal?
@@ -132,7 +121,6 @@ model Transaction {
     client         Client?          @relation(fields: [clientId], references: [id])
     expense        Expense?         @relation(fields: [expenseId], references: [id])
     payment_method FinancialAccount @relation(fields: [financialAccountId], references: [id])
-    Service        Service?         @relation(fields: [serviceId], references: [id])
     Sale           Sale[]
 }
 
