@@ -14,11 +14,12 @@ interface Props<T extends FieldValues> {
   placeholder?: string
   type: HTMLInputTypeAttribute
   value?:string|number
+  isHidden?:boolean
 }
 
 export default function DynamicInput<T extends FieldValues>(props: Props<T>) {
   return (
-    <div className='form-control max-w-sm'>
+    <div className={`form-control max-w-sm ${props.isHidden===true ? 'hidden':''}`} >
       <label className='label' htmlFor={props.field_id}>
         <span className='label-text capitalize'>{props.label}</span>
       </label>
@@ -31,7 +32,7 @@ export default function DynamicInput<T extends FieldValues>(props: Props<T>) {
         className='input-bordered input w-full ring-1 sm:input-sm md:input-md placeholder:text-xs'
         type={props.type}
         defaultValue={
-          props.type === 'date' ? new Date().toLocaleDateString('en-CA') : ''
+          props.type === 'date' ? new Date().toLocaleDateString('en-CA') : undefined
         }
         value={props.value}
       />

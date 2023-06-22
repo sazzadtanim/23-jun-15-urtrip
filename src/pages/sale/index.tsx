@@ -6,21 +6,19 @@ import { type ZodSale } from 'zodType'
 import { validateSale } from 'zodValidator'
 import { useNotification } from 'zustandStore/useNotification'
 import DynamicButton from '~/components/Dynamic/DynamicButton'
-import DynamicInput from '~/components/Dynamic/DynamicInput'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import DynamicModal from '~/components/Dynamic/DynamicModal'
 import DynamicSearchSelect from '~/components/Dynamic/DynamicSearchSelect'
 import LoadingAndError from '~/components/Dynamic/LoadingAndError'
 import Top2Menu from '~/components/UI/Top2Menu'
 import { api } from '~/utils/api'
-import { saleInputList2 } from '~data/saleInputList'
+import { saleInputListByTanim } from '~data/saleInputList'
 
 export default function SalePage() {
   const router = useRouter()
   const { mutate: createSupplier } = api.supplier.create.useMutation()
   const { mutate: createProvider } = api.provider.create.useMutation()
   const { mutate: createService } = api.service.create.useMutation()
-  const { data: financialAccounts } = api.payment.all.useQuery()
   const [isSupplierModalVisible, setIsSupplierModalVisible] = useState(false)
   const [isProviderModalVisible, setIsProviderModalVisible] = useState(false)
   const [isServiceModalVisible, setIsServiceModalVisible] = useState(false)
@@ -42,12 +40,12 @@ export default function SalePage() {
     handleSubmit,
     formState: { errors },
     setValue,
-    watch,
   } = useForm<ZodSale>({ resolver: zodResolver(validateSale) })
 
-  async function onSubmitForm(data: ZodSale) {
+  function onSubmitForm(data: ZodSale) {
+    console.log('🚀 ~ file: index.tsx:49 ~ onSubmitForm ~ data:', data)
     createSale(data)
-    await router.push('/client/clients')
+    // await router.push('/client/clients')
   }
 
   if (isSuccess) {
@@ -132,251 +130,67 @@ export default function SalePage() {
 
               <DynamicInputList
                 errors={errors}
-                inputlist={saleInputList2.slice(0, 10)}
+                inputlist={saleInputListByTanim}
                 register={register}
               />
             </div>
 
-            {/* Everything client related */}
-            <div className='max-w-sm'>
-              <div className='grid max-w-sm items-end justify-between'>
-                <div className='flex max-w-sm items-end justify-end'>
-                  <DynamicSearchSelect
-                    errors={errors}
-                    fieldId='clientId'
-                    label='client'
-                    setValue={setValue}
-                    apiData={clients}
-                  />
-                  <button
-                    className='btn-success btn-xs btn'
-                    type='button'
-                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                    onClick={async () => await router.push('/client')}
-                  >
-                    Add Client
-                  </button>
-                </div>
-
+            {/* Everything Client related */}
+            <div className='flex max-w-screen-sm items-end justify-between'>
+              <div className='grow'>
                 <DynamicSearchSelect
-                  apiData={[
-                    { id: 'paid', name: 'Paid' },
-                    { id: 'due', name: 'Due' },
-                    { id: 'partial', name: 'Partial' },
-                  ]}
                   errors={errors}
+                  fieldId='clientId'
+                  label='client'
                   setValue={setValue}
-                  fieldId='client_payment_status'
-                  label='client payment status'
+                  apiData={clients}
                 />
-
-                {(watch('client_payment_status') === 'paid' ||
-                  watch('client_payment_status') === 'partial') && (
-                  <DynamicInput
-                    field_id='client_payment_paid_amount'
-                    label='paid amount'
-                    errors={errors}
-                    register={register}
-                    type='number'
-                    placeholder='e.g. 2000'
-                    value={
-                      watch('client_payment_status') === 'paid'
-                        ? watch('total_amount')
-                        : undefined
-                    }
-                  />
-                )}
-
-                {(watch('client_payment_status') === 'due' ||
-                  watch('client_payment_status') === 'partial') && (
-                  <DynamicInput
-                    field_id='client_payment_due_amount'
-                    label='due amount'
-                    errors={errors}
-                    register={register}
-                    type='number'
-                    placeholder='e.g. 2000'
-                    value={
-                      watch('client_payment_status') === 'due'
-                        ? watch('total_amount')
-                        : undefined
-                    }
-                  />
-                )}
-
-                {(watch('client_payment_status') === 'paid' ||
-                  watch('client_payment_status') === 'partial') && (
-                  <DynamicInput
-                    field_id='client_payment_paid_date'
-                    label='paid date'
-                    errors={errors}
-                    register={register}
-                    type='date'
-                    placeholder='e.g. 2000'
-                  />
-                )}
-
-                {(watch('client_payment_status') === 'due' ||
-                  watch('client_payment_status') === 'partial') && (
-                  <DynamicInput
-                    field_id='client_payment_due_date'
-                    label='due date'
-                    errors={errors}
-                    register={register}
-                    type='date'
-                    placeholder='e.g. 2000'
-                  />
-                )}
-
-                {financialAccounts &&
-                  (watch('client_payment_status') === 'paid' ||
-                    watch('client_payment_status') === 'partial') && (
-                    <DynamicSearchSelect
-                      apiData={financialAccounts.map(account => ({
-                        id: account.id,
-                        name: account.title ?? '',
-                      }))}
-                      errors={errors}
-                      fieldId='client_payment_financialAccountId'
-                      label='payment method'
-                      setValue={setValue}
-                    />
-                  )}
-
-                {(watch('client_payment_status') === 'paid' ||
-                  watch('client_payment_status') === 'partial') && (
-                  <DynamicInput
-                    field_id='client_payment_details'
-                    label='payment details'
-                    errors={errors}
-                    register={register}
-                    type='text'
-                    placeholder='e.g. transaction id'
-                  />
-                )}
               </div>
+              <button
+                className='btn-success btn-xs btn'
+                type='button'
+                onClick={() => setIsSupplierModalVisible(true)}
+              >
+                Add Client
+              </button>
+              {isSupplierModalVisible && (
+                <DynamicModal
+                  create={createSupplier}
+                  isModalVisible={isSupplierModalVisible}
+                  label='supplier'
+                  placeholder='e.g. ShareTrip'
+                  refetch={refetchSupplier}
+                  setIsModalVisible={setIsSupplierModalVisible}
+                />
+              )}
             </div>
 
             {/* Everything Supplier related */}
-            <div>
-              {/* supplier */}
-              <div className='flex max-w-screen-sm items-end justify-between'>
-                <div className='grow'>
-                  <DynamicSearchSelect
-                    errors={errors}
-                    fieldId='supplierId'
-                    label='supplier'
-                    setValue={setValue}
-                    apiData={suppliers}
-                  />
-                </div>
-                <button
-                  className='btn-success btn-xs btn'
-                  type='button'
-                  onClick={() => setIsSupplierModalVisible(true)}
-                >
-                  Add Supplier
-                </button>
-                {isSupplierModalVisible && (
-                  <DynamicModal
-                    create={createSupplier}
-                    isModalVisible={isSupplierModalVisible}
-                    label='supplier'
-                    placeholder='e.g. ShareTrip'
-                    refetch={refetchSupplier}
-                    setIsModalVisible={setIsSupplierModalVisible}
-                  />
-                )}
+            <div className='flex max-w-screen-sm items-end justify-between'>
+              <div className='grow'>
+                <DynamicSearchSelect
+                  errors={errors}
+                  fieldId='supplierId'
+                  label='supplier'
+                  setValue={setValue}
+                  apiData={suppliers}
+                />
               </div>
-
-              <DynamicSearchSelect
-                apiData={[
-                  { id: 'paid', name: 'Paid' },
-                  { id: 'due', name: 'Due' },
-                  { id: 'partial', name: 'Partial' },
-                ]}
-                errors={errors}
-                setValue={setValue}
-                fieldId='supplier_payment_status'
-                label='payment status'
-              />
-
-              {(watch('supplier_payment_status') === 'paid' ||
-                watch('supplier_payment_status') === 'partial') && (
-                <DynamicInput
-                  field_id='supplier_payment_paid_amount'
-                  label='paid amount'
-                  errors={errors}
-                  register={register}
-                  type='number'
-                  value={
-                    watch('supplier_payment_status') === 'paid'
-                      ? watch('total_amount')
-                      : undefined
-                  }
-                />
-              )}
-
-              {(watch('supplier_payment_status') === 'due' ||
-                watch('supplier_payment_status') === 'partial') && (
-                <DynamicInput
-                  field_id='supplier_payment_due_amount'
-                  label='due amount'
-                  errors={errors}
-                  register={register}
-                  type='number'
-                  placeholder='e.g. 2000'
-                />
-              )}
-
-              {(watch('supplier_payment_status') === 'paid' ||
-                watch('supplier_payment_status') === 'partial') && (
-                <DynamicInput
-                  field_id='client_payment_paid_date'
-                  label='paid date'
-                  errors={errors}
-                  register={register}
-                  type='date'
-                  placeholder='e.g. 2000'
-                />
-              )}
-
-              {(watch('supplier_payment_status') === 'due' ||
-                watch('supplier_payment_status') === 'partial') && (
-                <DynamicInput
-                  field_id='client_payment_due_date'
-                  label='due date'
-                  errors={errors}
-                  register={register}
-                  type='date'
-                  placeholder='e.g. 2000'
-                />
-              )}
-
-              {financialAccounts &&
-                (watch('supplier_payment_status') === 'paid' ||
-                  watch('supplier_payment_status') === 'partial') && (
-                  <DynamicSearchSelect
-                    apiData={financialAccounts.map(account => ({
-                      id: account.id,
-                      name: account.title ?? '',
-                    }))}
-                    errors={errors}
-                    fieldId='client_payment_financialAccountId'
-                    label='payment method'
-                    setValue={setValue}
-                  />
-                )}
-
-              {(watch('supplier_payment_status') === 'paid' ||
-                watch('supplier_payment_status') === 'partial') && (
-                <DynamicInput
-                  field_id='supplier_payment_details'
-                  label='payment details'
-                  errors={errors}
-                  register={register}
-                  type='text'
-                  placeholder='e.g. transaction id'
+              <button
+                className='btn-success btn-xs btn'
+                type='button'
+                onClick={() => setIsSupplierModalVisible(true)}
+              >
+                Add Supplier
+              </button>
+              {isSupplierModalVisible && (
+                <DynamicModal
+                  create={createSupplier}
+                  isModalVisible={isSupplierModalVisible}
+                  label='supplier'
+                  placeholder='e.g. ShareTrip'
+                  refetch={refetchSupplier}
+                  setIsModalVisible={setIsSupplierModalVisible}
                 />
               )}
             </div>
@@ -393,3 +207,227 @@ export default function SalePage() {
     </>
   )
 }
+
+// function ClientForm() {
+//   return (
+//     <>
+//       <div className='max-w-sm'>
+//         <div className='grid max-w-sm items-end justify-between'>
+//           <div className='flex max-w-sm items-end justify-end'>
+//             <DynamicSearchSelect
+//               errors={errors}
+//               fieldId='clientId'
+//               label='client'
+//               setValue={setValue}
+//               apiData={clients}
+//             />
+//             <button
+//               className='btn-success btn-xs btn'
+//               type='button'
+//               // eslint-disable-next-line @typescript-eslint/no-misused-promises
+//               onClick={async () => await router.push('/client')}
+//             >
+//               Add Client
+//             </button>
+//           </div>
+
+//           <DynamicSearchSelect
+//             apiData={[
+//               { id: 'paid', name: 'Paid' },
+//               { id: 'due', name: 'Due' },
+//               { id: 'partial', name: 'Partial' },
+//             ]}
+//             errors={errors}
+//             setValue={setValue}
+//             fieldId='client_payment_status'
+//             label='client payment status'
+//           />
+
+//           {(watch('client_payment_status') === 'paid' ||
+//             watch('client_payment_status') === 'partial') && (
+//             <DynamicInput
+//               field_id='client_payment_paid_amount'
+//               label='paid amount'
+//               errors={errors}
+//               register={register}
+//               type='number'
+//               placeholder='e.g. 2000'
+//               value={
+//                 watch('client_payment_status') === 'paid'
+//                   ? watch('total_amount')
+//                   : undefined
+//               }
+//             />
+//           )}
+
+//           {(watch('client_payment_status') === 'due' ||
+//             watch('client_payment_status') === 'partial') && (
+//             <DynamicInput
+//               field_id='client_payment_due_amount'
+//               label='due amount'
+//               errors={errors}
+//               register={register}
+//               type='number'
+//               placeholder='e.g. 2000'
+//               value={
+//                 watch('client_payment_status') === 'due'
+//                   ? watch('total_amount')
+//                   : undefined
+//               }
+//             />
+//           )}
+
+//           {(watch('client_payment_status') === 'paid' ||
+//             watch('client_payment_status') === 'partial') && (
+//             <DynamicInput
+//               field_id='client_payment_paid_date'
+//               label='paid date'
+//               errors={errors}
+//               register={register}
+//               type='date'
+//               placeholder='e.g. 2000'
+//             />
+//           )}
+
+//           {(watch('client_payment_status') === 'due' ||
+//             watch('client_payment_status') === 'partial') && (
+//             <DynamicInput
+//               field_id='client_payment_due_date'
+//               label='due date'
+//               errors={errors}
+//               register={register}
+//               type='date'
+//               placeholder='e.g. 2000'
+//             />
+//           )}
+
+//           {financialAccounts &&
+//             (watch('client_payment_status') === 'paid' ||
+//               watch('client_payment_status') === 'partial') && (
+//               <DynamicSearchSelect
+//                 apiData={financialAccounts.map(account => ({
+//                   id: account.id,
+//                   name: account.title ?? '',
+//                 }))}
+//                 errors={errors}
+//                 fieldId='client_payment_financialAccountId'
+//                 label='payment method'
+//                 setValue={setValue}
+//               />
+//             )}
+
+//           {(watch('client_payment_status') === 'paid' ||
+//             watch('client_payment_status') === 'partial') && (
+//             <DynamicInput
+//               field_id='client_payment_details'
+//               label='payment details'
+//               errors={errors}
+//               register={register}
+//               type='text'
+//               placeholder='e.g. transaction id'
+//             />
+//           )}
+//         </div>
+//       </div>
+//     </>
+//   )
+// }
+
+// function SupplierForm(){
+//   return <>
+//               <div>
+//               {/* supplier */}
+
+//               <DynamicSearchSelect
+//                 apiData={[
+//                   { id: 'paid', name: 'Paid' },
+//                   { id: 'due', name: 'Due' },
+//                   { id: 'partial', name: 'Partial' },
+//                 ]}
+//                 errors={errors}
+//                 setValue={setValue}
+//                 fieldId='supplier_payment_status'
+//                 label='payment status'
+//               />
+
+//               {(watch('supplier_payment_status') === 'paid' ||
+//                 watch('supplier_payment_status') === 'partial') && (
+//                 <DynamicInput
+//                   field_id='supplier_payment_paid_amount'
+//                   label='paid amount'
+//                   errors={errors}
+//                   register={register}
+//                   type='number'
+//                   value={
+//                     watch('supplier_payment_status') === 'paid'
+//                       ? watch('total_amount')
+//                       : undefined
+//                   }
+//                 />
+//               )}
+
+//               {(watch('supplier_payment_status') === 'due' ||
+//                 watch('supplier_payment_status') === 'partial') && (
+//                 <DynamicInput
+//                   field_id='supplier_payment_due_amount'
+//                   label='due amount'
+//                   errors={errors}
+//                   register={register}
+//                   type='number'
+//                   placeholder='e.g. 2000'
+//                 />
+//               )}
+
+//               {(watch('supplier_payment_status') === 'paid' ||
+//                 watch('supplier_payment_status') === 'partial') && (
+//                 <DynamicInput
+//                   field_id='client_payment_paid_date'
+//                   label='paid date'
+//                   errors={errors}
+//                   register={register}
+//                   type='date'
+//                   placeholder='e.g. 2000'
+//                 />
+//               )}
+
+//               {(watch('supplier_payment_status') === 'due' ||
+//                 watch('supplier_payment_status') === 'partial') && (
+//                 <DynamicInput
+//                   field_id='client_payment_due_date'
+//                   label='due date'
+//                   errors={errors}
+//                   register={register}
+//                   type='date'
+//                   placeholder='e.g. 2000'
+//                 />
+//               )}
+
+//               {financialAccounts &&
+//                 (watch('supplier_payment_status') === 'paid' ||
+//                   watch('supplier_payment_status') === 'partial') && (
+//                   <DynamicSearchSelect
+//                     apiData={financialAccounts.map(account => ({
+//                       id: account.id,
+//                       name: account.title ?? '',
+//                     }))}
+//                     errors={errors}
+//                     fieldId='client_payment_financialAccountId'
+//                     label='payment method'
+//                     setValue={setValue}
+//                   />
+//                 )}
+
+//               {(watch('supplier_payment_status') === 'paid' ||
+//                 watch('supplier_payment_status') === 'partial') && (
+//                 <DynamicInput
+//                   field_id='supplier_payment_details'
+//                   label='payment details'
+//                   errors={errors}
+//                   register={register}
+//                   type='text'
+//                   placeholder='e.g. transaction id'
+//                 />
+//               )}
+//             </div>
+//   </>
+// }

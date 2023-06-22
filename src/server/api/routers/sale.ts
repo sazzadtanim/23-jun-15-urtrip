@@ -5,7 +5,7 @@ import { prisma } from '~/server/db'
 
 export const saleRouter = createTRPCRouter({
   create: publicProcedure.input(validateSale).mutation(async ({ input }) => {
-    const sale = await prisma.sale.create({ data: input })
+    const sale = await prisma.sale.create({ data:input })
     return sale
   }),
   delete: publicProcedure
