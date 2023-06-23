@@ -107,8 +107,8 @@ model Transaction {
     status      String?
     paid_amount Decimal?
     due_amount  Decimal?
-    due_date    String?
-    paid_date   String?
+    due_date    DateTime?
+    paid_date   DateTime?
     details     String?
 
     financialAccountId String?
