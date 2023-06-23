@@ -111,14 +111,15 @@ export const validateFinancialAccount = z.object({
 })
 
 export const validateTransaction = z.object({
-  type: z.enum(['payToSupplier', 'paidFromClient', 'payForExpense']),
+  // type: z.enum(['payToSupplier', 'paidFromClient', 'payForExpense']),
+  type:z.string().optional(),
   status: z.string().optional(),
   paid_amount: z.number().or(z.nan()).optional(),
   due_amount: z.number().or(z.nan()).optional(),
   due_date: z.string().optional(),
   paid_date: z.string().optional(),
   details: z.string().optional(),
-  financialAccountId: z.string(),
+  financialAccountId: z.string().optional(),
   supplierId: z.string().optional(),
   clientId: z.string().optional(),
   expenseId: z.string().optional(),

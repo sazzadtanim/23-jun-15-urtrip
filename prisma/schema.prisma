@@ -111,16 +111,16 @@ model Transaction {
     paid_date   DateTime?
     details     String?
 
-    financialAccountId String
+    financialAccountId String?
     supplierId         String?
     clientId           String?
     expenseId          String?
     serviceId          String?
 
-    supplier       Supplier?        @relation(fields: [supplierId], references: [id])
-    client         Client?          @relation(fields: [clientId], references: [id])
-    expense        Expense?         @relation(fields: [expenseId], references: [id])
-    payment_method FinancialAccount @relation(fields: [financialAccountId], references: [id])
+    supplier       Supplier?         @relation(fields: [supplierId], references: [id])
+    client         Client?           @relation(fields: [clientId], references: [id])
+    expense        Expense?          @relation(fields: [expenseId], references: [id])
+    payment_method FinancialAccount? @relation(fields: [financialAccountId], references: [id])
     Sale           Sale[]
 }
 

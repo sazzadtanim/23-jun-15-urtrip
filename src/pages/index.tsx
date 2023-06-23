@@ -3,8 +3,6 @@ import DynamicHeader from '~/components/Dynamic/DynamicHeader'
 import Top2Menu from '~/components/UI/Top2Menu'
 
 const Home: NextPage = () => {
- 
-
   return (
     <>
       <DynamicHeader title='Urtrip Dashboard' />
@@ -13,8 +11,6 @@ const Home: NextPage = () => {
         <h1 className='prose-2xl text-center'>
           This is backend app for UrTrip
         </h1>
-
-      
       </main>
     </>
   )

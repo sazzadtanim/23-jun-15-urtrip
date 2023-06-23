@@ -11,15 +11,19 @@ import DynamicModal from '~/components/Dynamic/DynamicModal'
 import DynamicSearchSelect from '~/components/Dynamic/DynamicSearchSelect'
 import LoadingAndError from '~/components/Dynamic/LoadingAndError'
 import Transaction from '~/components/Transaction'
+import Modal from '~/components/UI/Modal'
 import Top2Menu from '~/components/UI/Top2Menu'
 import { api } from '~/utils/api'
 import { saleInputListByTanim } from '~data/saleInputList'
 
 export default function SalePage() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { data: financialAccounts } = api.payment.all.useQuery()
   const router = useRouter()
   const { mutate: createSupplier } = api.supplier.create.useMutation()
   const { mutate: createProvider } = api.provider.create.useMutation()
   const { mutate: createService } = api.service.create.useMutation()
+  const { mutate: createTransaction } = api.transaction.create.useMutation()
   const [isSupplierModalVisible, setIsSupplierModalVisible] = useState(false)
   const [isProviderModalVisible, setIsProviderModalVisible] = useState(false)
   const [isServiceModalVisible, setIsServiceModalVisible] = useState(false)
@@ -30,6 +34,7 @@ export default function SalePage() {
   const { data: services, refetch: refetchService } = api.service.all.useQuery()
   const setNotification = useNotification(s => s.setNotification)
   const { data: clients } = api.client.all.useQuery()
+
   const {
     mutate: createSale,
     isSuccess,
@@ -41,6 +46,7 @@ export default function SalePage() {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm<ZodSale>({ resolver: zodResolver(validateSale) })
 
   function onSubmitForm(data: ZodSale) {
@@ -57,244 +63,171 @@ export default function SalePage() {
   return (
     <>
       <Top2Menu title='create Invoice' />
-      <div className=''>
-        <LoadingAndError error={error} isLoading={isLoading} />
-
-        <form
-          className='justify-center space-y-4 rounded-xl bg-base-100 p-10'
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onSubmit={handleSubmit(onSubmitForm)}
-        >
-          <div className='grid grid-flow-row grid-cols-3 gap-5'>
-            {/* Everything Service Related */}
-            <div>
-              {/* Service  */}
-              <div className='flex max-w-sm items-end justify-between'>
-                <DynamicSearchSelect
-                  errors={errors}
-                  fieldId='serviceId'
-                  label='service'
-                  setValue={setValue}
-                  apiData={services}
-                />
-
-                <button
-                  className='btn-success btn-xs btn'
-                  type='button'
-                  onClick={() =>
-                    setIsServiceModalVisible(!isServiceModalVisible)
-                  }
-                >
-                  Add service
-                </button>
-                {isServiceModalVisible && (
-                  <DynamicModal
-                    placeholder='e.g. Air Ticket'
-                    create={createService}
-                    isModalVisible={isServiceModalVisible}
-                    label='create service'
-                    refetch={refetchService}
-                    setIsModalVisible={setIsServiceModalVisible}
-                  />
-                )}
-              </div>
-
-              {/* provider */}
-              <div className='flex max-w-sm items-end justify-between'>
-                <DynamicSearchSelect
-                  errors={errors}
-                  fieldId='providerId'
-                  label='provider'
-                  setValue={setValue}
-                  apiData={providers}
-                />
-
-                <button
-                  className='btn-success btn-xs  btn'
-                  type='button'
-                  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                  onClick={() => setIsProviderModalVisible(true)}
-                >
-                  Add provider
-                </button>
-                {isProviderModalVisible && (
-                  <DynamicModal
-                    create={createProvider}
-                    isModalVisible={isProviderModalVisible}
-                    label='provider'
-                    placeholder='e.g. US Bangla'
-                    refetch={refetchProvider}
-                    setIsModalVisible={setIsProviderModalVisible}
-                  />
-                )}
-              </div>
-
-              <DynamicInputList
-                errors={errors}
-                inputlist={saleInputListByTanim}
-                register={register}
-              />
-            </div>
-
-            {/* Everything Client related */}
-            <div className='flex max-w-sm items-end justify-end'>
+      <LoadingAndError error={error} isLoading={isLoading} />
+      <form
+        className='justify-center space-y-4 rounded-xl bg-base-100 p-10'
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onSubmit={handleSubmit(onSubmitForm)}
+      >
+        <div className='grid grid-cols-2 gap-5'>
+          {/* Everything Service Related */}
+          <div>
+            {/* Service  */}
+            <div className='flex max-w-sm items-end justify-between'>
               <DynamicSearchSelect
                 errors={errors}
-                fieldId='clientId'
-                label='client'
+                fieldId='serviceId'
+                label='service'
                 setValue={setValue}
-                apiData={clients}
+                apiData={services}
               />
+
               <button
                 className='btn-success btn-xs btn'
                 type='button'
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                onClick={async () => await router.push('/client')}
+                onClick={() => setIsServiceModalVisible(!isServiceModalVisible)}
               >
-                Add Client
+                Add service
               </button>
-            </div>
-
-            <Transaction a='ss'/>
-
-            {/* Everything Supplier related */}
-            <div className='flex max-w-screen-sm items-end justify-between'>
-              <div className='grow'>
-                <DynamicSearchSelect
-                  errors={errors}
-                  fieldId='supplierId'
-                  label='supplier'
-                  setValue={setValue}
-                  apiData={suppliers}
-                />
-              </div>
-              <button
-                className='btn-success btn-xs btn'
-                type='button'
-                onClick={() => setIsSupplierModalVisible(true)}
-              >
-                Add Supplier
-              </button>
-              {isSupplierModalVisible && (
+              {isServiceModalVisible && (
                 <DynamicModal
-                  create={createSupplier}
-                  isModalVisible={isSupplierModalVisible}
-                  label='supplier'
-                  placeholder='e.g. ShareTrip'
-                  refetch={refetchSupplier}
-                  setIsModalVisible={setIsSupplierModalVisible}
+                  placeholder='e.g. Air Ticket'
+                  create={createService}
+                  isModalVisible={isServiceModalVisible}
+                  label='create service'
+                  refetch={refetchService}
+                  setIsModalVisible={setIsServiceModalVisible}
                 />
               )}
             </div>
+
+            {/* provider */}
+            <div className='flex max-w-sm items-end justify-between'>
+              <DynamicSearchSelect
+                errors={errors}
+                fieldId='providerId'
+                label='provider'
+                setValue={setValue}
+                apiData={providers}
+              />
+
+              <button
+                className='btn-success btn-xs  btn'
+                type='button'
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                onClick={() => setIsProviderModalVisible(true)}
+              >
+                Add provider
+              </button>
+              {isProviderModalVisible && (
+                <DynamicModal
+                  create={createProvider}
+                  isModalVisible={isProviderModalVisible}
+                  label='provider'
+                  placeholder='e.g. US Bangla'
+                  refetch={refetchProvider}
+                  setIsModalVisible={setIsProviderModalVisible}
+                />
+              )}
+            </div>
+
+            <DynamicInputList
+              errors={errors}
+              inputlist={saleInputListByTanim}
+              register={register}
+            />
+          </div>
+
+          {/* Everything Client related */}
+          <div className='flex max-w-sm items-end justify-end'>
+            <DynamicSearchSelect
+              errors={errors}
+              fieldId='clientId'
+              label='client'
+              setValue={setValue}
+              apiData={clients}
+            />
+            <button
+              className='btn-success btn-xs btn'
+              type='button'
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onClick={async () => await router.push('/client')}
+            >
+              Add Client
+            </button>
           </div>
 
           <DynamicButton
             size='medium'
             state='primary'
-            text='Submit'
-            type='submit'
+            text='client payment'
+            type='button'
+            onClick={() => setIsModalOpen(!isModalOpen)}
           />
-        </form>
-      </div>
+
+          <Modal SetIsModalClose={setIsModalOpen} isModalOpen={isModalOpen}>
+            <Transaction
+              clientId={watch('clientId')}
+              financialAccounts={financialAccounts}
+              totalAmount={300}
+              createTransaction={createTransaction}
+            />
+          </Modal>
+
+          {/* Everything Supplier related */}
+          <div className='flex max-w-screen-sm items-end justify-between'>
+            <div className='grow'>
+              <DynamicSearchSelect
+                errors={errors}
+                fieldId='supplierId'
+                label='supplier'
+                setValue={setValue}
+                apiData={suppliers}
+              />
+            </div>
+            <button
+              className='btn-success btn-xs btn'
+              type='button'
+              onClick={() => setIsSupplierModalVisible(true)}
+            >
+              Add Supplier
+            </button>
+            {isSupplierModalVisible && (
+              <DynamicModal
+                create={createSupplier}
+                isModalVisible={isSupplierModalVisible}
+                label='supplier'
+                placeholder='e.g. ShareTrip'
+                refetch={refetchSupplier}
+                setIsModalVisible={setIsSupplierModalVisible}
+              />
+            )}
+            <DynamicButton
+              size='medium'
+              state='primary'
+              text='supplier payment'
+              onClick={() => setIsModalOpen(!isModalOpen)}
+              type='button'
+            />
+
+            <Modal SetIsModalClose={setIsModalOpen} isModalOpen={isModalOpen}>
+              <Transaction
+                supplierId={watch('supplierId')}
+                financialAccounts={financialAccounts}
+                totalAmount={300}
+                createTransaction={createTransaction}
+              />
+            </Modal>
+          </div>
+        </div>
+
+        <DynamicButton
+          size='medium'
+          state='primary'
+          text='Submit'
+          type='submit'
+        />
+      </form>
     </>
   )
 }
-
-// function SupplierForm(){
-//   return <>
-//               <div>
-//               {/* supplier */}
-
-//               <DynamicSearchSelect
-//                 apiData={[
-//                   { id: 'paid', name: 'Paid' },
-//                   { id: 'due', name: 'Due' },
-//                   { id: 'partial', name: 'Partial' },
-//                 ]}
-//                 errors={errors}
-//                 setValue={setValue}
-//                 fieldId='supplier_payment_status'
-//                 label='payment status'
-//               />
-
-//               {(watch('supplier_payment_status') === 'paid' ||
-//                 watch('supplier_payment_status') === 'partial') && (
-//                 <DynamicInput
-//                   field_id='supplier_payment_paid_amount'
-//                   label='paid amount'
-//                   errors={errors}
-//                   register={register}
-//                   type='number'
-//                   value={
-//                     watch('supplier_payment_status') === 'paid'
-//                       ? watch('total_amount')
-//                       : undefined
-//                   }
-//                 />
-//               )}
-
-//               {(watch('supplier_payment_status') === 'due' ||
-//                 watch('supplier_payment_status') === 'partial') && (
-//                 <DynamicInput
-//                   field_id='supplier_payment_due_amount'
-//                   label='due amount'
-//                   errors={errors}
-//                   register={register}
-//                   type='number'
-//                   placeholder='e.g. 2000'
-//                 />
-//               )}
-
-//               {(watch('supplier_payment_status') === 'paid' ||
-//                 watch('supplier_payment_status') === 'partial') && (
-//                 <DynamicInput
-//                   field_id='client_payment_paid_date'
-//                   label='paid date'
-//                   errors={errors}
-//                   register={register}
-//                   type='date'
-//                   placeholder='e.g. 2000'
-//                 />
-//               )}
-
-//               {(watch('supplier_payment_status') === 'due' ||
-//                 watch('supplier_payment_status') === 'partial') && (
-//                 <DynamicInput
-//                   field_id='client_payment_due_date'
-//                   label='due date'
-//                   errors={errors}
-//                   register={register}
-//                   type='date'
-//                   placeholder='e.g. 2000'
-//                 />
-//               )}
-
-//               {financialAccounts &&
-//                 (watch('supplier_payment_status') === 'paid' ||
-//                   watch('supplier_payment_status') === 'partial') && (
-//                   <DynamicSearchSelect
-//                     apiData={financialAccounts.map(account => ({
-//                       id: account.id,
-//                       name: account.title ?? '',
-//                     }))}
-//                     errors={errors}
-//                     fieldId='client_payment_financialAccountId'
-//                     label='payment method'
-//                     setValue={setValue}
-//                   />
-//                 )}
-
-//               {(watch('supplier_payment_status') === 'paid' ||
-//                 watch('supplier_payment_status') === 'partial') && (
-//                 <DynamicInput
-//                   field_id='supplier_payment_details'
-//                   label='payment details'
-//                   errors={errors}
-//                   register={register}
-//                   type='text'
-//                   placeholder='e.g. transaction id'
-//                 />
-//               )}
-//             </div>
-//   </>
-// }

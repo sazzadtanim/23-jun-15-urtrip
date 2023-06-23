@@ -6,7 +6,11 @@ import { useForm } from 'react-hook-form'
 import { type ZodTransaction } from 'zodType'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { validateTransaction } from 'zodValidator'
-import { type FinancialAccount } from '@prisma/client'
+import {
+  type FinancialAccount,
+} from '@prisma/client'
+import DynamicButton from './Dynamic/DynamicButton'
+import DynamicSelect from './Dynamic/DynamicSelect'
 
 type TTransaction = {
   supplierId?: string
@@ -15,9 +19,12 @@ type TTransaction = {
   serviceId?: string
   totalAmount: number
   financialAccounts: FinancialAccount[] | undefined
+  // create: ({data}:{data:ZodTransaction})=>unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  createTransaction:any
 }
 
-export default function Transaction(props: TTransaction) {
+export default function TransactionComp(props: TTransaction) {
   const router = useRouter()
 
   const {
@@ -30,6 +37,8 @@ export default function Transaction(props: TTransaction) {
 
   function onFormSubmit(data: ZodTransaction) {
     console.log('data', JSON.stringify(data, null, 2))
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    props.createTransaction({ data })
   }
 
   useEffect(() => {
@@ -43,16 +52,16 @@ export default function Transaction(props: TTransaction) {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form action='' onSubmit={handleSubmit(onFormSubmit)} className='max-w-sm'>
       <div className='grid max-w-sm items-end justify-between'>
-        <DynamicSearchSelect
-          apiData={[
+        <DynamicSelect
+          data={[
             { id: 'payToSupplier', name: 'payToSupplier' },
             { id: 'paidFromClient', name: 'paidFromClient' },
             { id: 'payForExpense', name: 'payForExpense' },
           ]}
           errors={errors}
-          setValue={setValue}
           fieldId='type'
-          label='transaction type'
+          label=''
+          register={register}
         />
 
         <DynamicSearchSelect
@@ -159,7 +168,7 @@ export default function Transaction(props: TTransaction) {
         )}
       </div>
 
-      <input type='submit' value='submit' />
+      <DynamicButton size='medium' state='primary' text='submit' />
     </form>
   )
 }
