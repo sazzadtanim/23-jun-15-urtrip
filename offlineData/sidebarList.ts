@@ -4,7 +4,6 @@ import {
   HomeIcon,
   BanknotesIcon,
   ReceiptPercentIcon,
-  Squares2X2Icon,
   EyeIcon,
   MapPinIcon,
 } from '@heroicons/react/24/outline'
@@ -12,6 +11,7 @@ import {
 export interface SideBarItem {
   title: string
   url: string
+  
   submenu?: SideBarItem[]
   Icon: React.ForwardRefExoticComponent<
     Omit<React.SVGProps<SVGSVGElement>, 'ref'> & {
@@ -30,23 +30,12 @@ export const sidebarItems: SideBarItem[] = [
     Icon: MapPinIcon,
   },
   {
-    title: 'Clients',
+    title: 'Client',
     url: '/client',
     Icon: AcademicCapIcon,
   },
   { title: 'payment method', url: '/payment_method', Icon: BanknotesIcon },
   { title: 'invoice', url: '/invoice', Icon: BanknotesIcon },
-  // * remove after testing
-  {
-    title: 'Clients',
-    url: '/client/clients_simple_table',
-    Icon: AcademicCapIcon,
-  },
-  {
-    title: 'Sales',
-    url: '/sales/sales',
-    Icon: Squares2X2Icon,
-  },
   {
     url: '/quotation/quotations',
     title: 'Quotations',
