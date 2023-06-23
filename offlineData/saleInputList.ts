@@ -1,35 +1,34 @@
 // import { type InputList } from 'type'
 import { type InputList } from 'type'
-import { type ZodSale } from 'zodType'
+import { type ZodClientPayment, type ZodSale } from 'zodType'
 
 export const saleInputListByTanim: InputList<ZodSale>[] = [
   {
     name: 'service_details',
-    label: 'service_details',
-    placeholder: '',
+    label: 'service details',
+    placeholder: 'details',
     type: 'text',
   },
   {
     name: 'flight_dates',
-    label: 'flight_dates',
+    label: 'flight dates',
     placeholder: '',
     type: 'text',
   },
   { name: 'quantity', label: 'quantity', placeholder: '', type: 'number' },
-  { name: 'net_fare', label: 'net_fare', placeholder: '', type: 'number' },
+  { name: 'net_fare', label: 'net fare', placeholder: '', type: 'number' },
   {
     name: 'quoted_fare',
-    label: 'quoted_fare',
+    label: 'quoted fare',
     placeholder: '',
     type: 'number',
   },
   {
     name: 'total_amount',
-    label: 'total_amount',
+    label: 'total amount',
     placeholder: '',
     type: 'number',
   },
-
 ]
 
 export const others = [
@@ -184,6 +183,57 @@ export const others = [
   {
     name: 'expense_payment_expenseId',
     label: 'expense_payment_expenseId',
+    placeholder: '',
+    type: 'text',
+  },
+]
+
+export const clientPaymentList: InputList<ZodClientPayment>[] = [
+  {
+    name: 'client_payment_status',
+    label: 'client_payment_status',
+    placeholder: '',
+    type: 'text',
+  },
+  {
+    name: 'client_payment_paid_amount',
+    label: 'client_payment_paid_amount',
+    placeholder: '',
+    type: 'number',
+  },
+  {
+    name: 'client_payment_due_amount',
+    label: 'client_payment_due_amount',
+    placeholder: '',
+    type: 'number',
+  },
+  {
+    name: 'client_payment_due_date',
+    label: 'client_payment_due_date',
+    placeholder: '',
+    type: 'date',
+  },
+  {
+    name: 'client_payment_paid_date',
+    label: 'client_payment_paid_date',
+    placeholder: '',
+    type: 'date',
+  },
+  {
+    name: 'client_payment_details',
+    label: 'client_payment_details',
+    placeholder: '',
+    type: 'text',
+  },
+  {
+    name: 'client_payment_financialAccountId',
+    label: 'client_payment_financialAccountId',
+    placeholder: '',
+    type: 'text',
+  },
+  {
+    name: 'client_payment_clientId',
+    label: 'client_payment_clientId',
     placeholder: '',
     type: 'text',
   },

@@ -36,7 +36,7 @@ export default function DynamicSearchSelect<
             isSearchable
             escapeClearsValue
             backspaceRemovesValue
-            className='select-multiple grow capitalize placeholder:capitalize'
+            className='select-multiple grow capitalize placeholder:capitalize dark:text-black'
             placeholder={props.placeholder}
             options={props.apiData.map(({ id, name }) => ({
               label: name,
@@ -48,7 +48,7 @@ export default function DynamicSearchSelect<
           />
           {props.errors[props.fieldId] && (
             <label className='label'>
-              <span className='text-red-600 label-text-alt lowercase first-letter:capitalize'>
+              <span className='label-text-alt lowercase text-red-500 first-letter:capitalize'>
                 {props.errors[props.fieldId]?.message?.toString()}
               </span>
             </label>

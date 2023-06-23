@@ -9,6 +9,7 @@ import {
   type validateFinancialAccount,
   type validateTransaction,
   type validateInvoice,
+  type validateClientPayment,
 } from 'zodValidator'
 
 export type ZodSupplier = z.infer<typeof validateSupplier>
@@ -20,3 +21,4 @@ export type ZodSale = z.infer<typeof validateSale>
 export type ZodFinancialAccount = z.infer<typeof validateFinancialAccount>
 export type ZodTransaction = z.infer<typeof validateTransaction>
 export type ZodInvoice = z.infer<typeof validateInvoice>
+export type ZodClientPayment = z.infer<typeof validateClientPayment>

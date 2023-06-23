@@ -74,7 +74,18 @@ export const validateSale = z.object({
   serviceId: z.string(),
   providerId: z.string(),
   supplierId: z.string(),
+})
 
+export const validateClientPayment = z.object({
+  client_payment_type: z.enum(['paidFromClient']),
+  client_payment_status: z.string().optional(),
+  client_payment_paid_amount: z.number().or(z.nan()).optional(),
+  client_payment_due_amount: z.number().or(z.nan()).optional(),
+  client_payment_due_date: z.string().optional(),
+  client_payment_paid_date: z.string().optional(),
+  client_payment_details: z.string().optional(),
+  client_payment_financialAccountId: z.string().optional(),
+  client_payment_clientId: z.string().optional(),
 })
 
 export const validateInvoice = z.object({
@@ -100,16 +111,18 @@ export const validateFinancialAccount = z.object({
 })
 
 export const validateTransaction = z.object({
-  type: z.enum(['payToSupplier', 'paidFromClient', 'payForExpense']).optional(),
+  // type: z.enum(['payToSupplier', 'paidFromClient', 'payForExpense']),
+  type:z.string().optional(),
   status: z.string().optional(),
   paid_amount: z.number().or(z.nan()).optional(),
   due_amount: z.number().or(z.nan()).optional(),
-  due_date: z.string().optional(),
-  paid_date: z.string().optional(),
+  due_date: z.coerce.date().optional(),
+  paid_date: z.coerce.date().optional(),
   details: z.string().optional(),
-  financialAccountId: z.string(),
+  financialAccountId: z.string().optional(),
   supplierId: z.string().optional(),
   clientId: z.string().optional(),
   expenseId: z.string().optional(),
   serviceId: z.string().optional(),
+
 })
