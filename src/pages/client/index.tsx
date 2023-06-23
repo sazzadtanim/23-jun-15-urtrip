@@ -35,7 +35,7 @@ export default function ClientPage() {
 
   if (isSuccess) {
     setNotification({ message: `customer added successfully` })
-    void router.push('/sales/customer/customers')
+    router.back()
   }
 
   return (

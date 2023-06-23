@@ -37,7 +37,7 @@ export default function PaymentMethodPage() {
 
   if (isSuccess) {
     setNotification({ message: `customer added successfully` })
-    void router.push('/sales/customer/customers')
+    router.back()
   }
 
   return (

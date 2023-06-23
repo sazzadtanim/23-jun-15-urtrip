@@ -7,6 +7,7 @@ export const transactionRouter = createTRPCRouter({
   create: publicProcedure
     .input(validateTransaction)
     .mutation(async ({ input }) => {
+      console.log('🚀 ~ file: transaction.ts:13 ~ .mutation ~ input:', input)
       const client = await prisma.transaction.create({ data: input })
       return client
     }),

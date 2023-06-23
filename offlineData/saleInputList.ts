@@ -217,7 +217,7 @@ export const clientPaymentList: InputList<ZodClientPayment>[] = [
     name: 'client_payment_paid_date',
     label: 'client_payment_paid_date',
     placeholder: '',
-    type: 'text',
+    type: 'date',
   },
   {
     name: 'client_payment_details',

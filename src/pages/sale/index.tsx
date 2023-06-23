@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -10,15 +11,18 @@ import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import DynamicModal from '~/components/Dynamic/DynamicModal'
 import DynamicSearchSelect from '~/components/Dynamic/DynamicSearchSelect'
 import LoadingAndError from '~/components/Dynamic/LoadingAndError'
-import Transaction from '~/components/Transaction'
 import Modal from '~/components/UI/Modal'
 import Top2Menu from '~/components/UI/Top2Menu'
 import { api } from '~/utils/api'
 import { saleInputListByTanim } from '~data/saleInputList'
 
+const DynamicTransaction = dynamic(() => import('~/components/Transaction'))
+
 export default function SalePage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { data: financialAccounts } = api.payment.all.useQuery()
+  const [isClientModalOpen, setIsClientModalOpen] = useState(false)
+  const { data: financialAccounts, isSuccess: isfinancialAccountLoaded } =
+    api.payment.all.useQuery()
   const router = useRouter()
   const { mutate: createSupplier } = api.supplier.create.useMutation()
   const { mutate: createProvider } = api.provider.create.useMutation()
@@ -57,7 +61,8 @@ export default function SalePage() {
 
   if (isSuccess) {
     setNotification({ message: `customer added successfully` })
-    void router.push('/sales/customer/customers')
+    // void router.push('/sales/customer/customers')
+    router.back()
   }
 
   return (
@@ -162,16 +167,22 @@ export default function SalePage() {
             state='primary'
             text='client payment'
             type='button'
-            onClick={() => setIsModalOpen(!isModalOpen)}
+            onClick={() => setIsClientModalOpen(!isClientModalOpen)}
           />
 
-          <Modal SetIsModalClose={setIsModalOpen} isModalOpen={isModalOpen}>
-            <Transaction
-              clientId={watch('clientId')}
-              financialAccounts={financialAccounts}
-              totalAmount={300}
-              createTransaction={createTransaction}
-            />
+          <Modal
+            SetIsModalClose={setIsClientModalOpen}
+            isModalOpen={isClientModalOpen}
+          >
+            {isfinancialAccountLoaded && (
+              <DynamicTransaction
+                type='paidFromClient'
+                clientId={watch('clientId')}
+                financialAccounts={financialAccounts}
+                totalAmount={watch('total_amount')}
+                createTransaction={createTransaction}
+              />
+            )}
           </Modal>
 
           {/* Everything Supplier related */}
@@ -211,12 +222,15 @@ export default function SalePage() {
             />
 
             <Modal SetIsModalClose={setIsModalOpen} isModalOpen={isModalOpen}>
-              <Transaction
-                supplierId={watch('supplierId')}
-                financialAccounts={financialAccounts}
-                totalAmount={300}
-                createTransaction={createTransaction}
-              />
+              {isfinancialAccountLoaded && (
+                <DynamicTransaction
+                  type='payToSupplier'
+                  supplierId={watch('supplierId')}
+                  financialAccounts={financialAccounts}
+                  totalAmount={watch('total_amount')}
+                  createTransaction={createTransaction}
+                />
+              )}
             </Modal>
           </div>
         </div>
