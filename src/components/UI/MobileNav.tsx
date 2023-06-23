@@ -5,23 +5,23 @@ import { profilepic } from 'public/assets/png'
 import CompanyInfo from './sidebar/CompanyInfo'
 import { sidebarItems } from '~data/sidebarList'
 
-function ProfilePic() {
+function ProfilePic(): React.JSX.Element {
   return (
-    <>
-      <div className=''>
-        <Image
-          src={profilepic}
-          alt={''}
-          width={40}
-          height={40}
-          className='rounded-full'
-        />
-      </div>
-    </>
+    <div className=''>
+      <Image
+        src={profilepic}
+        alt={''}
+        width={40}
+        height={40}
+        className='rounded-full'
+      />
+    </div>
   )
 }
 
-function Hamburger() {
+// submenu ? <ul>submenu.map()<ul> : <li></li>
+
+function Hamburger(): React.JSX.Element {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -69,9 +69,7 @@ export default function MobileNav(): JSX.Element {
   return (
     <div className='my-5 flex items-center justify-around md:hidden '>
       <Hamburger />
-
       <CompanyInfo />
-
       <ProfilePic />
     </div>
   )
