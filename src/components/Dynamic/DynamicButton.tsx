@@ -15,9 +15,9 @@ export default function DynamicButton(
       ${props.state === 'primary' ? 'bg-gradient_purple hover:bg-red-500' : ''} 
       ${props.state === 'secondary' ? 'border-2 border-purple-500' : ''} 
       ${props.state === 'secondary-white' ? 'border-2 border-white' : ''}
-      ${props.size === 'medium' ? 'text-md px-6 py-2' : ''}
-      ${props.size === 'large' ? 'px-10 py-5 text-lg' : ''}
-      ${props.size === 'small' ? 'px-6 py-3 text-lg' : ''}     
+      ${props.size === 'medium' ? 'text-md px-6 py-2 my-2' : ''}
+      ${props.size === 'large' ? 'px-10 py-5 text-lg my-4' : ''}
+      ${props.size === 'small' ? 'px-6 py-3 text-lg my-1' : ''}     
       `}
       {...props}
     >
