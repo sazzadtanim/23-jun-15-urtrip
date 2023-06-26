@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form'
 import { type ZodSale } from 'zodType'
 import { validateSale } from 'zodValidator'
 import { useNotification } from 'zustandStore/useNotification'
-import DynamicButton from '~/components/Dynamic/DynamicButton'
 import DynamicButton2 from '~/components/Dynamic/DynamicButton2'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import DynamicModal from '~/components/Dynamic/DynamicModal'
@@ -166,6 +165,7 @@ export default function SalePage() {
                 state='primary'
                 text='add client'
                 type='button'
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 onClick={async () => await router.push('/client')}
               />
 

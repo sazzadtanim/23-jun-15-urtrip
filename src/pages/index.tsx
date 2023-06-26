@@ -1,6 +1,5 @@
 import { type NextPage } from 'next'
 import DynamicHeader from '~/components/Dynamic/DynamicHeader'
-import TransactionComp from '~/components/Transaction'
 import Top2Menu from '~/components/UI/Top2Menu'
 import InvoicePdf from '~/components/invoicePDF'
 
