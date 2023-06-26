@@ -43,7 +43,7 @@ export default function ClientPage() {
     <>
       {isModalOpen && (
         <Modal
-          SetIsModalClose={() => setIsModalOpen(!isModalOpen)}
+          SetIsModalOpen={() => setIsModalOpen(!isModalOpen)}
           isModalOpen={isModalOpen}
         >
           <div className='bg-white p-20'>

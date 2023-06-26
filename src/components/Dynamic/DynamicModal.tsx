@@ -1,5 +1,6 @@
 import React, { useState, type Dispatch, type SetStateAction } from 'react'
 import Modal from '../UI/Modal'
+import DynamicButton2 from './DynamicButton2'
 
 type TDynamicModal = {
   placeholder: string
@@ -16,7 +17,7 @@ export default function DynamicModal(props: TDynamicModal) {
     <div>
       <Modal
         isModalOpen={props.isModalVisible}
-        SetIsModalClose={() => props.setIsModalVisible(!props.isModalVisible)}
+        SetIsModalOpen={props.setIsModalVisible}
       >
         <div className='form-control w-full max-w-screen-sm '>
           <label className='label' htmlFor='service'>
@@ -29,18 +30,19 @@ export default function DynamicModal(props: TDynamicModal) {
             type={'text'}
             onChange={e => setServiceName(e.target.value)}
           />
-          <button
-            type='button'
-            className='btn-success btn-sm btn my-4'
+
+          <DynamicButton2
+            animate={true}
+            size='medium'
+            state='primary'
+            text='submit'
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={async () => {
               props.create({ name: serviceName })
               await props.refetch()
               props.setIsModalVisible(false)
             }}
-          >
-            Submit
-          </button>
+          />
         </div>
       </Modal>
     </div>

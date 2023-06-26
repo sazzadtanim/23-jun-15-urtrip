@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { type ZodSale } from 'zodType'
 import { validateSale } from 'zodValidator'
 import { useNotification } from 'zustandStore/useNotification'
-import DynamicButton from '~/components/Dynamic/DynamicButton'
+import DynamicButton2 from '~/components/Dynamic/DynamicButton2'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import DynamicModal from '~/components/Dynamic/DynamicModal'
 import DynamicSearchSelect from '~/components/Dynamic/DynamicSearchSelect'
@@ -51,7 +51,10 @@ export default function SalePage() {
     formState: { errors },
     setValue,
     watch,
-  } = useForm<ZodSale>({ resolver: zodResolver(validateSale) })
+  } = useForm<ZodSale>({
+    resolver: zodResolver(validateSale),
+    defaultValues: {},
+  })
 
   function onSubmitForm(data: ZodSale) {
     console.log('🚀 ~ file: index.tsx:49 ~ onSubmitForm ~ data:', data)
@@ -60,54 +63,55 @@ export default function SalePage() {
   }
 
   if (isSuccess) {
-    setNotification({ message: `customer added successfully` })
+    setNotification({ message: `sale entry created successfully` })
     // void router.push('/sales/customer/customers')
     router.back()
   }
 
   return (
-    <>
-      <Top2Menu title='create Invoice' />
+    <div className=''>
+      <Top2Menu title='create sale' />
       <LoadingAndError error={error} isLoading={isLoading} />
       <form
-        className='justify-center space-y-4 rounded-xl bg-base-100 p-10'
+        className='grid grid-cols-2 gap-2 rounded-xl bg-base-100'
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={handleSubmit(onSubmitForm)}
       >
-        <div className='grid grid-cols-2 gap-5'>
-          {/* Everything Service Related */}
+        {/* Everything Service Related */}
+        <>
           <div>
-            {/* Service  */}
-            <div className='flex max-w-sm items-end justify-between'>
-              <DynamicSearchSelect
-                errors={errors}
-                fieldId='serviceId'
-                label='service'
-                setValue={setValue}
-                apiData={services}
-              />
+            <DynamicSearchSelect
+              errors={errors}
+              fieldId='serviceId'
+              label='service'
+              setValue={setValue}
+              apiData={services}
+            />
 
-              <button
-                className='btn-success btn-xs btn'
-                type='button'
-                onClick={() => setIsServiceModalVisible(!isServiceModalVisible)}
-              >
-                Add service
-              </button>
-              {isServiceModalVisible && (
-                <DynamicModal
-                  placeholder='e.g. Air Ticket'
-                  create={createService}
-                  isModalVisible={isServiceModalVisible}
-                  label='create service'
-                  refetch={refetchService}
-                  setIsModalVisible={setIsServiceModalVisible}
-                />
-              )}
-            </div>
+            <button
+              className='btn-success btn-xs btn max-w-sm'
+              type='button'
+              onClick={() => setIsServiceModalVisible(!isServiceModalVisible)}
+            >
+              Add service
+            </button>
+          </div>
 
-            {/* provider */}
-            <div className='flex max-w-sm items-end justify-between'>
+          {isServiceModalVisible && (
+            <DynamicModal
+              placeholder='e.g. Air Ticket'
+              create={createService}
+              isModalVisible={isServiceModalVisible}
+              label='create service'
+              refetch={refetchService}
+              setIsModalVisible={setIsServiceModalVisible}
+            />
+          )}
+
+          {/* provider */}
+          <>
+            <div>
+              {' '}
               <DynamicSearchSelect
                 errors={errors}
                 fieldId='providerId'
@@ -115,36 +119,37 @@ export default function SalePage() {
                 setValue={setValue}
                 apiData={providers}
               />
-
               <button
-                className='btn-success btn-xs  btn'
+                className='btn-success btn-xs btn max-w-sm'
                 type='button'
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 onClick={() => setIsProviderModalVisible(true)}
               >
                 Add provider
               </button>
-              {isProviderModalVisible && (
-                <DynamicModal
-                  create={createProvider}
-                  isModalVisible={isProviderModalVisible}
-                  label='provider'
-                  placeholder='e.g. US Bangla'
-                  refetch={refetchProvider}
-                  setIsModalVisible={setIsProviderModalVisible}
-                />
-              )}
             </div>
+            {isProviderModalVisible && (
+              <DynamicModal
+                create={createProvider}
+                isModalVisible={isProviderModalVisible}
+                label='provider'
+                placeholder='e.g. US Bangla'
+                refetch={refetchProvider}
+                setIsModalVisible={setIsProviderModalVisible}
+              />
+            )}
+          </>
 
-            <DynamicInputList
-              errors={errors}
-              inputlist={saleInputListByTanim}
-              register={register}
-            />
-          </div>
+          <DynamicInputList
+            errors={errors}
+            inputlist={saleInputListByTanim}
+            register={register}
+          />
+        </>
 
-          {/* Everything Client related */}
-          <div className='flex max-w-sm items-end justify-end'>
+        {/* Everything Client related */}
+        <>
+          <div>
             <DynamicSearchSelect
               errors={errors}
               fieldId='clientId'
@@ -152,30 +157,36 @@ export default function SalePage() {
               setValue={setValue}
               apiData={clients}
             />
-            <button
-              className='btn-success btn-xs btn'
-              type='button'
-              // eslint-disable-next-line @typescript-eslint/no-misused-promises
-              onClick={async () => await router.push('/client')}
-            >
-              Add Client
-            </button>
+
+            <div className='flex max-w-sm justify-between'>
+              <DynamicButton2
+                animate
+                size='xs'
+                state='primary'
+                text='add client'
+                type='button'
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                onClick={async () => await router.push('/client')}
+              />
+
+              <DynamicButton2
+                animate={true}
+                size='xs'
+                state='primary'
+                text='client payment'
+                type='button'
+                onClick={() => setIsClientModalOpen(!isClientModalOpen)}
+              />
+            </div>
           </div>
 
-          <DynamicButton
-            size='medium'
-            state='primary'
-            text='client payment'
-            type='button'
-            onClick={() => setIsClientModalOpen(!isClientModalOpen)}
-          />
-
           <Modal
-            SetIsModalClose={setIsClientModalOpen}
+            SetIsModalOpen={() => setIsClientModalOpen(!isClientModalOpen)}
             isModalOpen={isClientModalOpen}
           >
             {isfinancialAccountLoaded && (
               <DynamicTransaction
+                setIsModalVisible={setIsClientModalOpen}
                 type='paidFromClient'
                 clientId={watch('clientId')}
                 financialAccounts={financialAccounts}
@@ -184,9 +195,11 @@ export default function SalePage() {
               />
             )}
           </Modal>
+        </>
 
-          {/* Everything Supplier related */}
-          <div className='flex max-w-screen-sm items-end justify-between'>
+        {/* Everything Supplier related */}
+        <>
+          <div>
             <div className='grow'>
               <DynamicSearchSelect
                 errors={errors}
@@ -196,52 +209,61 @@ export default function SalePage() {
                 apiData={suppliers}
               />
             </div>
-            <button
-              className='btn-success btn-xs btn'
-              type='button'
-              onClick={() => setIsSupplierModalVisible(true)}
-            >
-              Add Supplier
-            </button>
-            {isSupplierModalVisible && (
-              <DynamicModal
-                create={createSupplier}
-                isModalVisible={isSupplierModalVisible}
-                label='supplier'
-                placeholder='e.g. ShareTrip'
-                refetch={refetchSupplier}
-                setIsModalVisible={setIsSupplierModalVisible}
+
+            <div className='flex max-w-sm justify-between'>
+              <DynamicButton2
+                animate={true}
+                size='xs'
+                state='primary'
+                text='add supplier'
+                onClick={() => setIsSupplierModalVisible(true)}
+              />
+
+              <DynamicButton2
+                animate={true}
+                size='xs'
+                state='primary'
+                text='supplier payment'
+                onClick={() => setIsModalOpen(!isModalOpen)}
+                type='button'
+              />
+            </div>
+          </div>
+
+          <DynamicModal
+            create={createSupplier}
+            isModalVisible={isSupplierModalVisible}
+            label='supplier'
+            placeholder='e.g. ShareTrip'
+            refetch={refetchSupplier}
+            setIsModalVisible={setIsSupplierModalVisible}
+          />
+
+          <Modal
+            SetIsModalOpen={() => setIsModalOpen(!isModalOpen)}
+            isModalOpen={isModalOpen}
+          >
+            {isfinancialAccountLoaded && (
+              <DynamicTransaction
+                setIsModalVisible={setIsModalOpen}
+                type='payToSupplier'
+                supplierId={watch('supplierId')}
+                financialAccounts={financialAccounts}
+                totalAmount={watch('total_amount')}
+                createTransaction={createTransaction}
               />
             )}
-            <DynamicButton
-              size='medium'
-              state='primary'
-              text='supplier payment'
-              onClick={() => setIsModalOpen(!isModalOpen)}
-              type='button'
-            />
+          </Modal>
+        </>
 
-            <Modal SetIsModalClose={setIsModalOpen} isModalOpen={isModalOpen}>
-              {isfinancialAccountLoaded && (
-                <DynamicTransaction
-                  type='payToSupplier'
-                  supplierId={watch('supplierId')}
-                  financialAccounts={financialAccounts}
-                  totalAmount={watch('total_amount')}
-                  createTransaction={createTransaction}
-                />
-              )}
-            </Modal>
-          </div>
-        </div>
-
-        <DynamicButton
-          size='medium'
+        <DynamicButton2
+          size='large'
           state='primary'
           text='Submit'
           type='submit'
+          animate
         />
       </form>
-    </>
+    </div>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type Dispatch, type SetStateAction } from 'react'
 import DynamicSearchSelect from './Dynamic/DynamicSearchSelect'
 import { useRouter } from 'next/router'
 import DynamicInput from './Dynamic/DynamicInput'
@@ -10,6 +10,7 @@ import { type FinancialAccount } from '@prisma/client'
 import DynamicButton from './Dynamic/DynamicButton'
 
 type TTransaction = {
+  setIsModalVisible: Dispatch<SetStateAction<boolean>>
   supplierId?: string
   clientId?: string
   expenseId?: string
@@ -42,19 +43,11 @@ export default function TransactionComp(props: TTransaction) {
     },
   })
 
-  // useEffect(() => {
-  //   setValue('clientId', props.clientId)
-  //   setValue('expenseId', props.expenseId)
-  //   setValue('serviceId', props.serviceId)
-  //   setValue('supplierId', props.supplierId)
-  //   setValue('type', props.type)
-  //   setValue('paid_amount', props.totalAmount)
-  // })
-
   function onFormSubmit(data: ZodTransaction) {
     console.log('🚀 ~ file: Transaction.tsx:38 ~ onFormSubmit ~ data:', data)
     props.createTransaction(data)
     // router.back()
+    props.setIsModalVisible(false)
   }
 
   return (

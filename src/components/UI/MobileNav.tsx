@@ -3,9 +3,27 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { profilepic } from 'public/assets/png'
 import CompanyInfo from './sidebar/CompanyInfo'
+import { sidebarItems } from '~data/sidebarList'
 
-function Hamburger() {
+function ProfilePic(): React.JSX.Element {
+  return (
+    <div className=''>
+      <Image
+        src={profilepic}
+        alt={''}
+        width={40}
+        height={40}
+        className='rounded-full'
+      />
+    </div>
+  )
+}
+
+// submenu ? <ul>submenu.map()<ul> : <li></li>
+
+function Hamburger(): React.JSX.Element {
   const [isOpen, setIsOpen] = useState(false)
+
   return (
     <div className=''>
       {/* Icon */}
@@ -35,74 +53,13 @@ function Hamburger() {
           isOpen ? 'absolute' : 'hidden'
         }`}
       >
-        <li>
-          <Link href={'/'} onClick={() => setIsOpen(prev => !prev)}>
-            Dashboard
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={'/client/clients'}
-            onClick={() => setIsOpen(prev => !prev)}
-          >
-            Client
-          </Link>
-        </li>
-        <li>
-          <Link href={'/sales/sales'} onClick={() => setIsOpen(prev => !prev)}>
-            Sales
-          </Link>
-        </li>
-
-        <li>
-          <Link
-            href={'/quotation/quotations'}
-            onClick={() => setIsOpen(prev => !prev)}
-          >
-            Quotation
-          </Link>
-        </li>
-        {/* Purchase */}
-        <li>
-          <div className='justify-between'>
-            Purchase
-            <svg
-              className='fill-current'
-              xmlns='http://www.w3.org/2000/svg'
-              width='24'
-              height='24'
-              viewBox='0 0 24 24'
-            >
-              <path d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z' />
-            </svg>
-          </div>
-          <ul className='bg-white p-2'>
-            <li>
-              <Link
-                href={'/purchase/item/items'}
-                onClick={() => setIsOpen(prev => !prev)}
-              >
-                Items
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={'/purchase/invoice/invoices'}
-                onClick={() => setIsOpen(prev => !prev)}
-              >
-                Invoice
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={'/purchase/supplier/suppliers'}
-                onClick={() => setIsOpen(prev => !prev)}
-              >
-                Supplier
-              </Link>
-            </li>
-          </ul>
-        </li>
+        {sidebarItems.map(item => (
+          <li key={item.title} onClick={() => setIsOpen(!isOpen)}>
+            <Link href={item.url}>
+              <span className='capitalize'>{item.title}</span>
+            </Link>
+          </li>
+        ))}
       </ul>
     </div>
   )
@@ -112,26 +69,8 @@ export default function MobileNav(): JSX.Element {
   return (
     <div className='my-5 flex items-center justify-around md:hidden '>
       <Hamburger />
-
       <CompanyInfo />
-
       <ProfilePic />
     </div>
-  )
-}
-
-function ProfilePic() {
-  return (
-    <>
-      <div className=''>
-        <Image
-          src={profilepic}
-          alt={''}
-          width={40}
-          height={40}
-          className='rounded-full'
-        />
-      </div>
-    </>
   )
 }

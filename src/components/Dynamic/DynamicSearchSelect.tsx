@@ -25,7 +25,7 @@ export default function DynamicSearchSelect<
   return (
     <>
       {props.apiData && (
-        <div className='grid grow'>
+        <div className='grid max-w-sm grow'>
           <label className='label' htmlFor='categoryId'>
             <span className='label-text capitalize'>{props.label}</span>
           </label>
