@@ -7,6 +7,7 @@ import { type ZodSale } from 'zodType'
 import { validateSale } from 'zodValidator'
 import { useNotification } from 'zustandStore/useNotification'
 import DynamicButton2 from '~/components/Dynamic/DynamicButton2'
+import DynamicInput from '~/components/Dynamic/DynamicInput'
 import DynamicInputList from '~/components/Dynamic/DynamicInputList'
 import DynamicModal from '~/components/Dynamic/DynamicModal'
 import DynamicSearchSelect from '~/components/Dynamic/DynamicSearchSelect'
@@ -20,7 +21,6 @@ const DynamicTransaction = dynamic(() => import('~/components/Transaction'))
 
 export default function SalePage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isClientModalOpen, setIsClientModalOpen] = useState(false)
   const { data: financialAccounts, isSuccess: isfinancialAccountLoaded } =
     api.payment.all.useQuery()
   const router = useRouter()
@@ -53,7 +53,6 @@ export default function SalePage() {
     watch,
   } = useForm<ZodSale>({
     resolver: zodResolver(validateSale),
-    defaultValues: {},
   })
 
   function onSubmitForm(data: ZodSale) {
@@ -73,10 +72,12 @@ export default function SalePage() {
       <Top2Menu title='create sale' />
       <LoadingAndError error={error} isLoading={isLoading} />
       <form
-        className='grid grid-cols-2 gap-2 rounded-xl bg-base-100'
+        className='grid gap-2 rounded-xl bg-base-100'
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={handleSubmit(onSubmitForm)}
       >
+
+
         {/* Everything Service Related */}
         <>
           <div>
@@ -147,56 +148,6 @@ export default function SalePage() {
           />
         </>
 
-        {/* Everything Client related */}
-        <>
-          <div>
-            <DynamicSearchSelect
-              errors={errors}
-              fieldId='clientId'
-              label='client'
-              setValue={setValue}
-              apiData={clients}
-            />
-
-            <div className='flex max-w-sm justify-between'>
-              <DynamicButton2
-                animate
-                size='xs'
-                state='primary'
-                text='add client'
-                type='button'
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                onClick={async () => await router.push('/client')}
-              />
-
-              <DynamicButton2
-                animate={true}
-                size='xs'
-                state='primary'
-                text='client payment'
-                type='button'
-                onClick={() => setIsClientModalOpen(!isClientModalOpen)}
-              />
-            </div>
-          </div>
-
-          <Modal
-            SetIsModalOpen={() => setIsClientModalOpen(!isClientModalOpen)}
-            isModalOpen={isClientModalOpen}
-          >
-            {isfinancialAccountLoaded && (
-              <DynamicTransaction
-                setIsModalVisible={setIsClientModalOpen}
-                type='paidFromClient'
-                clientId={watch('clientId')}
-                financialAccounts={financialAccounts}
-                totalAmount={watch('total_amount')}
-                createTransaction={createTransaction}
-              />
-            )}
-          </Modal>
-        </>
-
         {/* Everything Supplier related */}
         <>
           <div>
@@ -217,15 +168,6 @@ export default function SalePage() {
                 state='primary'
                 text='add supplier'
                 onClick={() => setIsSupplierModalVisible(true)}
-              />
-
-              <DynamicButton2
-                animate={true}
-                size='xs'
-                state='primary'
-                text='supplier payment'
-                onClick={() => setIsModalOpen(!isModalOpen)}
-                type='button'
               />
             </div>
           </div>
@@ -254,14 +196,135 @@ export default function SalePage() {
               />
             )}
           </Modal>
+
+          {/* Supplier payment */}
+          <>
+            <DynamicSearchSelect
+              apiData={[
+                { id: 'paid', name: 'Paid' },
+                { id: 'due', name: 'Due' },
+                { id: 'partial', name: 'Partial' },
+              ]}
+              errors={errors}
+              setValue={setValue}
+              fieldId='supplier_payment_status'
+              label='supplier payment status'
+            />
+
+            {watch('supplier_payment_status') === 'paid' && (
+              <DynamicInput
+                field_id='supplier_payment_paid_amount'
+                label='paid amount'
+                errors={errors}
+                register={register}
+                type='number'
+                placeholder='e.g. 2000'
+              />
+            )}
+
+            {watch('supplier_payment_status') === 'partial' && (
+              <DynamicInput
+                field_id='supplier_payment_paid_amount'
+                label='paid amount'
+                errors={errors}
+                register={register}
+                type='number'
+                placeholder='e.g. 2000'
+              />
+            )}
+
+            {watch('supplier_payment_status') === 'due' && (
+              <DynamicInput
+                field_id='supplier_payment_due_amount'
+                label='due amount'
+                errors={errors}
+                register={register}
+                type='number'
+                placeholder='e.g. 2000'
+              />
+            )}
+
+            {watch('supplier_payment_status') === 'partial' && (
+              <DynamicInput
+                field_id='supplier_payment_due_amount'
+                label='due amount'
+                errors={errors}
+                register={register}
+                type='number'
+                placeholder='e.g. 2000'
+              />
+            )}
+
+            {(watch('supplier_payment_status') === 'paid' ||
+              watch('supplier_payment_status') === 'partial') && (
+              <DynamicInput
+                field_id='supplier_payment_paid_date'
+                label='paid date'
+                errors={errors}
+                register={register}
+                type='date'
+                placeholder='e.g. 2000'
+              />
+            )}
+
+            {(watch('supplier_payment_status') === 'due' ||
+              watch('supplier_payment_status') === 'partial') && (
+              <DynamicInput
+                field_id='supplier_payment_due_date'
+                label='due date'
+                errors={errors}
+                register={register}
+                type='date'
+                placeholder='e.g. 2000'
+              />
+            )}
+
+            {financialAccounts &&
+              (watch('supplier_payment_status') === 'paid' ||
+                watch('supplier_payment_status') === 'partial') && (
+                <div className='flex max-w-sm items-end justify-end'>
+                  <DynamicSearchSelect
+                    apiData={financialAccounts.map(account => ({
+                      id: account.id,
+                      name: account.title ?? '',
+                    }))}
+                    errors={errors}
+                    fieldId='supplier_payment_financialAccountId'
+                    label='payment method'
+                    setValue={setValue}
+                  />
+                  <button
+                    className='btn-success btn-xs btn'
+                    type='button'
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    onClick={async () => await router.push('/payment_method')}
+                  >
+                    Add Payment method
+                  </button>
+                </div>
+              )}
+
+            {(watch('supplier_payment_status') === 'paid' ||
+              watch('supplier_payment_status') === 'partial') && (
+              <DynamicInput
+                field_id='supplier_payment_details'
+                label='payment details'
+                errors={errors}
+                register={register}
+                type='text'
+                placeholder='e.g. transaction id'
+              />
+            )}
+          </>
         </>
 
         <DynamicButton2
           size='large'
-          state='primary'
+          state='deep_blue'
           text='Submit'
           type='submit'
           animate
+          position='center'
         />
       </form>
     </div>

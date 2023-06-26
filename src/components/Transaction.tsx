@@ -17,7 +17,7 @@ type TTransaction = {
   serviceId?: string
   totalAmount?: number
   type: 'paidFromClient' | 'payToSupplier' | 'payForExpense'
-  financialAccounts: FinancialAccount[]
+  financialAccounts: FinancialAccount[] | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createTransaction: (data: ZodTransaction) => unknown
 }

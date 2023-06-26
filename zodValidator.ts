@@ -37,18 +37,35 @@ export const validateSale = z.object({
   total_amount: z.number().or(z.nan()).optional(),
   discount: z.number().or(z.nan()).optional(),
 
-  // client payment
-  // client_payment_type: z.enum(['paidFromClient']),
-  // client_payment_status: z.string().optional(),
-  // client_payment_paid_amount: z.number().or(z.nan()).optional(),
-  // client_payment_due_amount: z.number().or(z.nan()).optional(),
-  // client_payment_due_date: z.string().optional(),
-  // client_payment_paid_date: z.string().optional(),
-  // client_payment_details: z.string().optional(),
-  // client_payment_financialAccountId: z.string().optional(),
-  // client_payment_clientId: z.string().optional(),
+  // client
+  client_payment_type: z.string().optional(),
+  client_payment_status: z.string().optional(),
+  client_payment_paid_amount: z.number().or(z.nan()).optional(),
+  client_payment_due_amount: z.number().or(z.nan()).optional(),
+  client_payment_due_date: z.coerce.date().optional(),
+  client_payment_paid_date: z.coerce.date().optional(),
+  client_payment_details: z.string().optional(),
+  client_payment_financialAccountId: z.string().optional(),
+  client_payment_supplierId: z.string().optional(),
+  client_payment_clientId: z.string().optional(),
+  client_payment_expenseId: z.string().optional(),
+  client_payment_serviceId: z.string().optional(),
 
   // supplier payment
+
+  supplier_payment_type: z.string().optional(),
+  supplier_payment_status: z.string().optional(),
+  supplier_payment_paid_amount: z.number().or(z.nan()).optional(),
+  supplier_payment_due_amount: z.number().or(z.nan()).optional(),
+  supplier_payment_due_date: z.coerce.date().optional(),
+  supplier_payment_paid_date: z.coerce.date().optional(),
+  supplier_payment_details: z.string().optional(),
+  supplier_payment_financialAccountId: z.string().optional(),
+  supplier_payment_supplierId: z.string().optional(),
+  supplier_payment_clientId: z.string().optional(),
+  supplier_payment_expenseId: z.string().optional(),
+  supplier_payment_serviceId: z.string().optional(),
+
   // supplier_payment_type: z.enum(['payToSupplier']),
   // supplier_payment_status: z.string().optional(),
   // supplier_payment_paid_amount: z.number().or(z.nan()).optional(),
@@ -112,7 +129,7 @@ export const validateFinancialAccount = z.object({
 
 export const validateTransaction = z.object({
   // type: z.enum(['payToSupplier', 'paidFromClient', 'payForExpense']),
-  type:z.string().optional(),
+  type: z.string().optional(),
   status: z.string().optional(),
   paid_amount: z.number().or(z.nan()).optional(),
   due_amount: z.number().or(z.nan()).optional(),
@@ -124,5 +141,4 @@ export const validateTransaction = z.object({
   clientId: z.string().optional(),
   expenseId: z.string().optional(),
   serviceId: z.string().optional(),
-
 })
