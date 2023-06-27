@@ -32,7 +32,7 @@ export default function DynamicInput<T extends FieldValues>(props: Props<T>) {
           valueAsNumber: props.type === 'number' ? true : false,
         })}
         placeholder={props.placeholder}
-        className='input-bordered input w-full ring-1 sm:input-sm md:input-md placeholder:text-xs'
+        className='input-bordered input w-full ring-1 sm:input-sm md:input-md placeholder:text-xs placeholder:capitalize'
         type={props.type}
         defaultValue={
           props.type === 'date'
